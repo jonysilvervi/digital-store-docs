@@ -134,7 +134,7 @@ function writeReport() {
     L.push(``, `Отличия — информация, а не ошибка. Ошибки находят правила отображения выше.`);
   };
   const lastSha = (() => { try { return readFileSync(join(process.env.PREV_DIR || "", "LAST_SHA"), "utf8").trim().slice(0, 7); } catch { return null; } })();
-  vis(vPrev, `Изменения по сравнению с предыдущими снимками${lastSha ? ` (последняя проверка — коммит ${lastSha})` : ""}`);
+  vis(vPrev, `Изменения по сравнению с последней успешной проверкой${lastSha ? ` (коммит ${lastSha})` : ""}`);
   vis(vBase, "Отличия от эталона");
 
   L.push(``, `## Сводные листы`, ``);
