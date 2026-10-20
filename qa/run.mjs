@@ -31,7 +31,9 @@ function decideMode() {
   const msg = process.env.COMMIT_MSG || "";
   if (/\[qa:(full|baseline)\]/.test(msg)) return ["full", "пометка в описании коммита"];
   if (/\[qa:fast\]/.test(msg)) return ["fast", "пометка [qa:fast] в описании коммита"];
-  const before = process.env.BEFORE_SHA || "";
+  // сравниваем с последним УСПЕШНО проверенным коммитом: изменения отменённых запусков тоже учитываются
+  let before = process.env.BEFORE_SHA || "";
+  try { const last = readFileSync(join(process.env.PREV_DIR || "", "LAST_SHA"), "utf8").trim(); if (last) before = last; } catch {}
   if (!before || /^0+$/.test(before)) return ["full", "нет предыдущего коммита для сравнения"];
   if (!existsSync(process.env.PREV_DIR || "/nonexistent")) return ["full", "нет снимков предыдущей проверки"];
   try {
@@ -39,7 +41,7 @@ function decideMode() {
     if (files.some((f) => f.startsWith("qa/") || f.startsWith(".github/"))) return ["full", "изменена сама система проверки"];
     const style = (rev) => { const s = execSync(`git -C "${ROOT}" show ${rev}:index.html`).toString(); const m = s.match(/<style>[\s\S]*?<\/style>/); return m ? m[0] : ""; };
     if (files.includes("index.html") && style(before) !== style(SHA)) return ["full", "изменены стили страницы"];
-    return ["fast", files.length ? `изменено: ${files.join(", ")}; стили не менялись` : "изменений файлов нет"];
+    return ["fast", files.length ? `изменено с последней успешной проверки ${before.slice(0, 7)}: ${files.join(", ")}; стили не менялись` : `с последней успешной проверки ${before.slice(0, 7)} файлы не менялись`];
   } catch (e) { return ["full", "не удалось сравнить с предыдущим коммитом"]; }
 }
 
