@@ -219,6 +219,280 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
+<script type="application/json" id="catalog">
+{
+ "_note": "ДЕМО-ДАННЫЕ. Состав предложений, цены, остатки, прогнозы и условия выдуманы для схемы; это не коммерческие сведения. Названия тарифов сверены с chatgpt.com/pricing на 20.10.2026.",
+ "product": {
+  "id": "chatgpt",
+  "name": "ChatGPT"
+ },
+ "tariffs": [
+  "Go",
+  "Plus",
+  "Pro",
+  "Business"
+ ],
+ "offers": [
+  {
+   "id": "go-own",
+   "t": "Go",
+   "kind": "own",
+   "name": "На ваш аккаунт",
+   "fact": "Подключение к вашему аккаунту ChatGPT",
+   "max": 3,
+   "unit": [
+    "активация",
+    "активации",
+    "активаций",
+    true
+   ],
+   "terms": {
+    "1": {
+     "price": 4.9,
+     "st": "ok"
+    },
+    "3": {
+     "price": 13.9,
+     "st": "ok"
+    },
+    "12": {
+     "price": 49,
+     "st": "ok"
+    }
+   },
+   "req": [
+    {
+     "text": "почта вашего аккаунта ChatGPT",
+     "scope": "unit"
+    }
+   ],
+   "limits": [
+    "Нужен ваш аккаунт ChatGPT без действующей платной подписки."
+   ]
+  },
+  {
+   "id": "plus-own",
+   "t": "Plus",
+   "kind": "own",
+   "name": "На ваш аккаунт",
+   "fact": "Подключение к вашему аккаунту ChatGPT",
+   "max": 3,
+   "unit": [
+    "активация",
+    "активации",
+    "активаций",
+    true
+   ],
+   "terms": {
+    "1": {
+     "price": 14.9,
+     "st": "ok"
+    },
+    "3": {
+     "price": 42,
+     "st": "ok"
+    },
+    "12": {
+     "price": 159,
+     "st": "ok"
+    }
+   },
+   "req": [
+    {
+     "text": "почта вашего аккаунта ChatGPT",
+     "scope": "unit"
+    }
+   ],
+   "limits": [
+    "Нужен ваш аккаунт ChatGPT без действующей платной подписки."
+   ]
+  },
+  {
+   "id": "plus-sep",
+   "t": "Plus",
+   "kind": "sep",
+   "name": "Отдельный аккаунт",
+   "fact": "Новый аккаунт, которым пользуетесь только вы",
+   "max": 3,
+   "unit": [
+    "аккаунт",
+    "аккаунта",
+    "аккаунтов",
+    false
+   ],
+   "terms": {
+    "1": {
+     "price": 17.9,
+     "st": "low",
+     "left": 2
+    },
+    "3": {
+     "price": 51,
+     "st": "ok"
+    }
+   },
+   "req": [],
+   "limits": [
+    "Аккаунт создаём мы, данные для входа — после оплаты."
+   ]
+  },
+  {
+   "id": "plus-shared",
+   "t": "Plus",
+   "kind": "shared",
+   "name": "Место в общем аккаунте",
+   "fact": "Один аккаунт на нескольких покупателей",
+   "max": 5,
+   "unit": [
+    "место",
+    "места",
+    "мест",
+    false
+   ],
+   "terms": {
+    "1": {
+     "price": 6.9,
+     "st": "ok"
+    },
+    "3": {
+     "price": 18.9,
+     "st": "out"
+    }
+   },
+   "req": [],
+   "limits": [
+    "Аккаунтом пользуются несколько покупателей — ваши чаты могут видеть другие участники.",
+    "Пароль и настройки аккаунта менять нельзя."
+   ]
+  },
+  {
+   "id": "pro-own",
+   "t": "Pro",
+   "kind": "own",
+   "name": "На ваш аккаунт",
+   "fact": "Подключение к вашему аккаунту ChatGPT",
+   "max": 1,
+   "unit": [
+    "активация",
+    "активации",
+    "активаций",
+    true
+   ],
+   "terms": {
+    "1": {
+     "price": 149,
+     "st": "ok"
+    }
+   },
+   "req": [
+    {
+     "text": "почта вашего аккаунта ChatGPT",
+     "scope": "item"
+    }
+   ],
+   "limits": [
+    "Нужен ваш аккаунт ChatGPT без действующей платной подписки."
+   ]
+  },
+  {
+   "id": "pro-shared",
+   "t": "Pro",
+   "kind": "shared",
+   "name": "Место в общем аккаунте",
+   "fact": "Один аккаунт на нескольких покупателей",
+   "max": 5,
+   "unit": [
+    "место",
+    "места",
+    "мест",
+    false
+   ],
+   "terms": {
+    "1": {
+     "price": 39,
+     "st": "ok"
+    },
+    "3": {
+     "price": 110,
+     "st": "soon",
+     "eta": "через 2–3 дня"
+    }
+   },
+   "req": [],
+   "limits": [
+    "Аккаунтом пользуются несколько покупателей — ваши чаты могут видеть другие участники.",
+    "Пароль и настройки аккаунта менять нельзя."
+   ]
+  },
+  {
+   "id": "pro-sep",
+   "t": "Pro",
+   "kind": "sep",
+   "name": "Отдельный аккаунт",
+   "fact": "Новый аккаунт, которым пользуетесь только вы",
+   "max": 1,
+   "unit": [
+    "аккаунт",
+    "аккаунта",
+    "аккаунтов",
+    false
+   ],
+   "terms": {
+    "1": {
+     "price": 179,
+     "st": "out"
+    },
+    "3": {
+     "price": 499,
+     "st": "out"
+    }
+   },
+   "req": [],
+   "limits": [
+    "Аккаунт создаём мы, данные для входа — после оплаты."
+   ]
+  },
+  {
+   "id": "biz-team",
+   "t": "Business",
+   "kind": "team",
+   "name": "Место в рабочем пространстве",
+   "fact": "Место в командном пространстве Business",
+   "max": 10,
+   "unit": [
+    "место",
+    "места",
+    "мест",
+    false
+   ],
+   "terms": {
+    "1": {
+     "price": 22,
+     "st": "ok"
+    },
+    "12": {
+     "price": 240,
+     "st": "soon",
+     "eta": null
+    }
+   },
+   "req": [
+    {
+     "text": "почта участника",
+     "scope": "unit"
+    },
+    {
+     "text": "название команды",
+     "scope": "item"
+    }
+   ],
+   "limits": [
+    "Пространством управляет его администратор."
+   ]
+  }
+ ]
+}
+</script>
 <script>
 (function(){
 "use strict";
@@ -227,38 +501,11 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
    У каждого предложения сроки задаются отдельно. Срока нет в terms — он не продаётся.
    Срок есть — у него своё наличие: ok (доступно), low (ограниченный остаток, left — известное число),
    soon (ожидается, eta — подтверждённый прогноз или null = «срок уточняется»), out (нет в наличии). */
-var TARIFFS=["Go","Plus","Pro","Business"];
+var CATALOG=JSON.parse(document.getElementById("catalog").textContent); // данные — отдельно от логики
+var TARIFFS=CATALOG.tariffs, OFFERS=CATALOG.offers;
 var TL={1:"1 мес",3:"3 мес",12:"12 мес"};
 var TLG={1:"1 месяц",3:"3 месяца",12:"12 месяцев"};
-var OWN_LIMIT="Нужен ваш аккаунт ChatGPT без действующей платной подписки.";
-var SHARED_LIMITS=["Аккаунтом пользуются несколько покупателей — ваши чаты могут видеть другие участники.","Пароль и настройки аккаунта менять нельзя."];
-var U_ACT=["активация","активации","активаций",true], U_SEAT=["место","места","мест",false], U_ACC=["аккаунт","аккаунта","аккаунтов",false];
-var OFFERS=[
- {id:"go-own",t:"Go",kind:"own",name:"На ваш аккаунт",fact:"Подключение к вашему аккаунту ChatGPT",max:3,unit:U_ACT,
-  terms:{1:{price:4.9,st:"ok"},3:{price:13.9,st:"ok"},12:{price:49,st:"ok"}},
-  req:[{text:"почта вашего аккаунта ChatGPT",scope:"unit"}],limits:[OWN_LIMIT]},
- {id:"plus-own",t:"Plus",kind:"own",name:"На ваш аккаунт",fact:"Подключение к вашему аккаунту ChatGPT",max:3,unit:U_ACT,
-  terms:{1:{price:14.9,st:"ok"},3:{price:42,st:"ok"},12:{price:159,st:"ok"}},
-  req:[{text:"почта вашего аккаунта ChatGPT",scope:"unit"}],limits:[OWN_LIMIT]},
- {id:"plus-sep",t:"Plus",kind:"sep",name:"Отдельный аккаунт",fact:"Новый аккаунт, которым пользуетесь только вы",max:3,unit:U_ACC,
-  terms:{1:{price:17.9,st:"low",left:2},3:{price:51,st:"ok"}},
-  req:[],limits:["Аккаунт создаём мы, данные для входа — после оплаты."]},
- {id:"plus-shared",t:"Plus",kind:"shared",name:"Место в общем аккаунте",fact:"Один аккаунт на нескольких покупателей",max:5,unit:U_SEAT,
-  terms:{1:{price:6.9,st:"ok"},3:{price:18.9,st:"out"}},
-  req:[],limits:SHARED_LIMITS},
- {id:"pro-own",t:"Pro",kind:"own",name:"На ваш аккаунт",fact:"Подключение к вашему аккаунту ChatGPT",max:1,unit:U_ACT,
-  terms:{1:{price:149,st:"ok"}},
-  req:[{text:"почта вашего аккаунта ChatGPT",scope:"item"}],limits:[OWN_LIMIT]},
- {id:"pro-shared",t:"Pro",kind:"shared",name:"Место в общем аккаунте",fact:"Один аккаунт на нескольких покупателей",max:5,unit:U_SEAT,
-  terms:{1:{price:39,st:"ok"},3:{price:110,st:"soon",eta:"через 2–3 дня"}},
-  req:[],limits:SHARED_LIMITS},
- {id:"pro-sep",t:"Pro",kind:"sep",name:"Отдельный аккаунт",fact:"Новый аккаунт, которым пользуетесь только вы",max:1,unit:U_ACC,
-  terms:{1:{price:179,st:"out"},3:{price:499,st:"out"}},
-  req:[],limits:["Аккаунт создаём мы, данные для входа — после оплаты."]},
- {id:"biz-team",t:"Business",kind:"team",name:"Место в рабочем пространстве",fact:"Место в командном пространстве Business",max:10,unit:U_SEAT,
-  terms:{1:{price:22,st:"ok"},12:{price:240,st:"soon",eta:null}},
-  req:[{text:"почта участника",scope:"unit"},{text:"название команды",scope:"item"}],limits:["Пространством управляет его администратор."]}
-];
+OFFERS.forEach(function(o){Object.keys(o.terms).forEach(function(k){if(!TL[k]){TL[k]=k+" мес";TLG[k]=k+" мес.";}})});
 var GET={own:function(t){return "Подписка "+t+" на вашем аккаунте ChatGPT"},
          sep:function(t){return "Новый аккаунт ChatGPT "+t+" только для вас"},
          shared:function(t){return "Место в общем аккаунте ChatGPT "+t},
@@ -318,7 +565,7 @@ function render(){
   // тарифы
   var tw=$("tariffs");tw.innerHTML="";
   TARIFFS.forEach(function(t){
-    var b=document.createElement("button");b.innerHTML='<span class="lab">'+t+'</span>';b.setAttribute("aria-pressed",S.t===t);
+    var b=document.createElement("button");b.innerHTML='<span class="lab">'+t+'</span>';b.setAttribute("aria-pressed",S.t===t);b.setAttribute("data-tariff",t);
     b.onclick=function(){setTariff(t)};tw.appendChild(b);
   });
   // предложения: все предложения тарифа; цена всегда подписана сроком
@@ -336,7 +583,7 @@ function render(){
       right='<span class="op st">'+stText(xi)+'<small>на '+TL[S.term]+'</small></span>';
       extra=(xi.st==="soon"?'<span class="stx">'+esc(etaText(xi))+'</span>':'')+(S.o===x.id?'':'<button class="notify" data-notify="'+x.id+'">Уведомить</button>'); // у выбранного — кнопка в панели
     }
-    row.className="offer"+(buyable(xi)?"":" na");
+    row.className="offer"+(buyable(xi)?"":" na");row.setAttribute("data-offer-id",x.id);
     row.setAttribute("role","radio");row.setAttribute("aria-checked",S.o===x.id);row.tabIndex=0;
     row.innerHTML='<span class="radio" aria-hidden="true"></span><span class="on">'+esc(x.name)+'</span>'+right+
       '<span class="of"><span>'+esc(x.fact)+'</span>'+extra+'</span>';
@@ -349,7 +596,7 @@ function render(){
   // сроки тарифа; у выбранного предложения непродаваемый срок неактивен, а отсутствие на складе подписано
   var sw=$("terms");sw.innerHTML="";
   tariffTerms(S.t).forEach(function(n){
-    var b=document.createElement("button");b.setAttribute("aria-pressed",S.term===n);
+    var b=document.createElement("button");b.setAttribute("aria-pressed",S.term===n);b.setAttribute("data-term",n);
     var sub="";
     if(o){var ni=info(o,n);
       if(!ni){b.disabled=true;sub="не продаётся";}
@@ -509,7 +756,30 @@ if(DEMO){
     });
   };
 }
+function applyUrlState(search){ // только в тестовом режиме: любое состояние открывается по адресу
+  var p=new URLSearchParams(search);
+  var t=p.get("t");if(t&&TARIFFS.indexOf(t)>=0)S.t=t;
+  var tt=tariffTerms(S.t),n=+p.get("term");S.term=tt.indexOf(n)>=0?n:(tt.indexOf(S.term)>=0?S.term:tt[0]);
+  var o=byId(p.get("o"));
+  if(o&&o.t===S.t){S.o=o.id;if(!info(o,S.term)){var ks=keys(o);S.term=ks.filter(function(k){return buyable(info(o,k))})[0]||ks[0];}}
+  var q=+p.get("q");if(q>1&&S.o){var i=info(cur(),S.term);if(buyable(i))S.q=Math.min(q,maxQty(cur(),i));}
+  return p.get("sheet");
+}
+function openStartSheet(sh){
+  if(sh==="cond"&&cur())$("openCond").click();
+  else if(sh==="tariffs")$("openTar").click();
+  else if(sh==="notify"&&cur()&&!buyable(info(cur(),S.term)))openNotify(cur(),S.term,$("notifyBar"));
+}
+var startSheet=DEMO?applyUrlState(location.search):null;
 render();
+openStartSheet(startSheet);
+if(DEMO){ // служебная функция для автопроверок: то же, что открыть адрес состояния, но без перезагрузки
+  window.__qaSet=function(search){
+    closeSheet();S={t:"Plus",o:null,term:1,q:1};notice="";cart=0;$("cartN").hidden=true;$("toast").hidden=true;
+    Array.prototype.forEach.call(document.querySelectorAll("details"),function(d){d.open=false});
+    var sh=applyUrlState(search);render();openStartSheet(sh);window.scrollTo(0,0);return true;
+  };
+}
 })();
 </script>
 </body>

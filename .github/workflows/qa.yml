@@ -1,0 +1,82 @@
+# Автоматическая проверка опубликованного прототипа после каждого обновления gh-pages.
+# Файл живёт в ветке gh-pages: запуск по push использует сценарий из самого проверяемого коммита,
+# поэтому main и PROJECT_BRIEF.md не нужны и не изменяются. Результаты — в ветку qa-results.
+name: qa
+
+on:
+  push:
+    branches: [gh-pages]
+
+# Несколько публикаций подряд: проверяется только самая новая, старый запуск отменяется.
+concurrency:
+  group: qa-gh-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: write   # запись результатов в qa-results
+  pages: read       # подтверждение сборки GitHub Pages
+
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      REPO: ${{ github.repository }}
+      SITE_SHA: ${{ github.sha }}
+      BEFORE_SHA: ${{ github.event.before }}
+      COMMIT_MSG: ${{ github.event.head_commit.message }}
+      PAGE_URL: https://jonysilvervi.github.io/digital-store-docs/index.html
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: qa/package-lock.json
+
+      - name: Restore browser cache
+        id: pwcache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('qa/package-lock.json') }}
+
+      - name: Install
+        working-directory: qa
+        run: |
+          npm ci --no-audit --no-fund
+          if [ "${{ steps.pwcache.outputs.cache-hit }}" != "true" ]; then
+            npx playwright install --with-deps chromium
+          else
+            node -e "import('playwright').then(async m=>{const b=await m.chromium.launch();await b.close()})" || npx playwright install-deps chromium
+          fi
+
+      - name: Wait for the published version
+        run: node qa/wait-live.mjs
+
+      - name: Load previous results
+        run: git clone -q --depth 1 --branch qa-results "https://github.com/${REPO}" prev || mkdir -p prev
+
+      - name: Run checks
+        id: qa
+        continue-on-error: true
+        env:
+          BASE_URL: ${{ env.PAGE_URL }}
+          PREV_DIR: prev/reference
+          BASELINE_DIR: prev/baseline
+        run: node qa/run.mjs
+
+      - name: Publish results
+        if: always() && hashFiles('qa/out/report.md') != ''
+        run: bash qa/publish.sh
+
+      - name: Fail the job if checks did not pass
+        if: steps.qa.outcome != 'success'
+        run: |
+          echo "Проверка не пройдена или не выполнена — см. отчёт в qa-results/latest/report.md"
+          exit 1
