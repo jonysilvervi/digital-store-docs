@@ -608,7 +608,7 @@ function settle(msgs,prev,direct){
   var mx=maxQty(o,i),q=Math.min(desired.q,mx);
   var prevQ=prev&&prev.qShown;                                 // количество, которое было видно до действия
   if(q<desired.q&&prevQ!==q)msgs.push("Количество уменьшено до "+q+": "+(i.st==="low"&&i.left<o.max?"в наличии только "+i.left+" шт.":"в одном заказе не больше "+o.max+" шт."));
-  else if(q===desired.q&&prevQ!=null&&prevQ!==q)msgs.push("Количество снова "+q+", как вы выбирали.");
+  else if(q===desired.q&&prev&&prev.o&&q>1&&prevQ!==q)msgs.push("Количество снова "+q+", как вы выбирали.");   // и когда счётчик был скрыт
   S.q=q;
 }
 function shownQty(){var o=cur(),i=o&&info(o,S.term);return o&&buyable(i)&&o.max>1?S.q:null}
@@ -629,7 +629,7 @@ function pickOffer(o){
   S.o=o.id;settle(msgs,prev);notice=msgs.join(" ");render();
 }
 function setTerm(n){
-  if(S.term===n){desired.term=n;return;}                       // явный выбор запоминается, даже если срок уже стоял (А7-02)
+  if(S.term===n){desired.term=n;if(notice){notice="";render();}return;}   // собственное действие снимает старое пояснение                       // явный выбор запоминается, даже если срок уже стоял (А7-02)
   var prev=snapshot(),msgs=[];
   desired.term=n;S.term=n;settle(msgs,prev,true);notice=msgs.join(" ");render();
 }
