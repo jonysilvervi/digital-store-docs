@@ -35,7 +35,7 @@ export async function logicSuite(browser, cat, base, results) {
       if (norm(r.on) !== norm(o.name)) p.push(`название «${r.on}»`);
       if (norm(r.of) !== norm(o.fact)) p.push("нет короткого описания");
       if (c) {
-        const want = (termsOf(o).length > 1 ? "от " : "") + norm(eur(c.price));
+        const want = (buyTerms(o).length > 1 ? "от " : "") + norm(eur(c.price));
         if (!op.startsWith(want)) p.push(`цена «${op}» вместо «${want} …»`);
         if (!op.includes(`за ${TC(c.term)}`)) p.push(`у цены нет фактического срока «за ${TC(c.term)}»`);
       } else if (op !== offerStatus(o)) p.push(`статус «${op}» вместо «${offerStatus(o)}»`);

@@ -40,7 +40,7 @@ button[aria-disabled="true"]{cursor:not-allowed}
 .logo{border:1.5px dashed var(--ink2);border-radius:6px;padding:4px 10px;font-size:13px;color:var(--ink2);margin-right:auto;white-space:nowrap}
 .ib{position:relative;width:44px;height:44px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
 .ib svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--sel);color:var(--selInk);font-size:12px;display:grid;place-items:center;padding:0 4px;font-variant-numeric:tabular-nums}
+.badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--sel);color:var(--selInk);font-size:13px;display:grid;place-items:center;padding:0 4px;font-variant-numeric:tabular-nums}
 .demo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:6px;padding-bottom:6px;background:var(--fill2);border-bottom:1px dashed var(--line);font-size:13px;color:var(--ink2)}
 .demo button{font-size:13px;text-decoration:underline;text-underline-offset:3px;color:var(--ink);white-space:nowrap;min-height:32px}
 
@@ -119,7 +119,8 @@ button[aria-disabled="true"]{cursor:not-allowed}
 .step button{width:44px;height:44px;font-size:20px}
 .step button[aria-disabled="true"]{opacity:.35}
 .step span{min-width:32px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
-.qmsg{margin:0;font-size:var(--fs);color:var(--ink)}
+.qh{min-width:0}
+.qmsg{margin:2px 0 0;font-size:var(--fs-s);color:var(--ink)}
 .req{margin:16px 0 0;font-size:var(--fs-s);color:var(--ink2)}
 .req b{color:var(--ink);font-weight:500}
 
@@ -139,6 +140,7 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
   display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
   margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
 @media (min-width:480px){.bar{border-radius:0 0 16px 16px}}
+@media (min-width:480px) and (max-width:819px){.cover{aspect-ratio:16/9}}  /* выбор раньше попадает на первый экран */
 .sum{flex:1 1 0;min-width:0;line-height:1.3}
 .sum b{font-size:19px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .sum b.st{font-size:16px;white-space:normal}
@@ -237,10 +239,9 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
 
       <section class="sec" id="qtySec" hidden>
         <div class="qty">
-          <h2 id="hQ">Количество</h2>
+          <div class="qh"><h2 id="hQ">Количество</h2><p class="qmsg" id="qmsg" role="status" aria-live="polite" hidden></p></div>
           <div class="step" role="group" aria-labelledby="hQ"><button id="qm" aria-label="Меньше">−</button><span id="qv" aria-live="polite">1</span><button id="qp" aria-label="Больше">+</button></div>
         </div>
-        <p class="qmsg" id="qmsg" hidden></p>
       </section>
 
       <p class="req" id="req" hidden></p>
@@ -262,8 +263,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
         <details><summary>Чем отличаются тарифы Go, Plus, Pro и Business?</summary><p>Сравнение открывается по ссылке «Сравнить тарифы» рядом с выбором тарифа. Описания возможностей мы возьмём из официальных данных OpenAI после проверки.</p></details>
         <details><summary>Какой способ доступа выбрать?</summary><p>«На ваш аккаунт» — если у вас уже есть аккаунт ChatGPT и вы хотите пользоваться им. «Отдельный аккаунт» — если нужен новый аккаунт только для вас. «Место в общем аккаунте» — дешевле, но аккаунтом пользуются несколько покупателей. «Место в рабочем пространстве» — место в команде на тарифе Business.</p></details>
         <details><summary>Чем личный аккаунт отличается от общего?</summary><p>Личным аккаунтом — вашим или отдельным — пользуетесь только вы. Общим аккаунтом пользуются несколько покупателей. Что именно видят другие участники и что нельзя менять, указано в условиях способа доступа.</p></details>
-        <details><summary>Что нужно для подключения?</summary><p>Зависит от способа доступа. После выбора это написано над панелью покупки: например, почта вашего аккаунта ChatGPT или только почта для получения заказа.</p></details>
-        <details><summary>Можно ли продлить подписку?</summary><p>Продление будет доступно из кабинета и из письма с заказом. При продлении заново проверяются цена и наличие. Можно ли продлить конкретный вариант без перерыва, будет указано в его условиях.</p></details>
+        <details><summary>Что нужно для подключения?</summary><p>Зависит от способа доступа. После выбора способа это указано в строке «Понадобится»: например, почта вашего аккаунта ChatGPT или только почта для получения заказа.</p></details>
+        <details><summary>Можно ли продлить подписку?</summary><p>Продления в прототипе пока нет — это запланированная функция. Когда оно появится, цена и наличие при продлении будут проверяться заново, а возможность продлить конкретный вариант без перерыва будет указана в его условиях.</p></details>
       </div>
       <p class="help">Общие вопросы о покупке, оплате и возврате — в разделе <button class="lnk" data-stub="Помощь" style="font-size:inherit">Помощь</button>.</p>
     </section>
@@ -587,17 +588,17 @@ function tariffCheapest(t){var best=null;offersOf(t).forEach(function(o){var c=c
 
 /* Выбор пользователя. desired — последние явно выбранные срок и количество внутри текущего тарифа (реестр А7). */
 var INIT={t:"Plus",term:1,q:1}; // тариф выбран заранее только для прототипа, это не рекомендация
-var S, desired, notice="", cart=0, opener=null, anchor=null;
+var S, desired, notice="", cart=0, opener=null, anchor=null, qtyAct=false;
 function resetState(){S={t:INIT.t,o:null,term:INIT.term,q:1};desired={term:null,q:1};notice="";}
 resetState();
 function cur(){return S.o?byId(S.o):null}
 
 /* Применить желаемые значения к выбранному способу. msgs — пояснения о любых изменениях не по прямому действию. */
-function settle(msgs,prev){
+function settle(msgs,prev,direct){
   var o=cur();if(!o)return;
   var want=desired.term!=null?desired.term:S.term;
-  var n=info(o,want)?want:(info(o,S.term)?S.term:(buyTerms(o)[0]||keys(o)[0]));
-  if(prev&&prev.o&&prev.term!==n){
+  var n=want!=null&&info(o,want)?want:(S.term!=null&&info(o,S.term)?S.term:(buyTerms(o)[0]||keys(o)[0]));
+  if(prev&&prev.o&&prev.term!==n&&!direct){
     if(desired.term!=null&&n===desired.term)msgs.push("Срок снова "+TLG(n)+", как вы выбирали.");
     else msgs.push("Срок изменён на "+TLG(n)+": у способа «"+o.name+"» нет срока "+TLG(prev.term)+".");
   }
@@ -614,10 +615,13 @@ function shownQty(){var o=cur(),i=o&&info(o,S.term);return o&&buyable(i)&&o.max>
 function snapshot(){return {o:S.o,term:S.term,qShown:shownQty()}}
 
 function setTariff(t){
-  if(S.t===t)return;var msgs=[];
-  if(S.o||S.q>1)msgs.push("Тариф изменён: "+(S.o?"способ доступа ":"")+(S.o&&S.q>1?"и ":"")+(S.q>1?"количество ":"")+"выбираются заново.");
-  S.t=t;S.o=null;S.q=1;desired={term:null,q:1};
-  var only=offersOf(t);if(only.length===1){S.o=only[0].id;settle([],null);}   // единственный способ выбирается сразу (Г-04)
+  if(S.t===t)return;var msgs=[],had=[];
+  if(S.o)had.push("способ доступа");if(S.o&&S.term!==INIT.term)had.push("срок");if(S.q>1)had.push("количество");
+  var only=offersOf(t);
+  if(had.length)msgs.push("Тариф изменён: "+(had.length>1?had.slice(0,-1).join(", ")+" и "+had[had.length-1]+" выбираются":had[0]+" выбирается")+" заново."
+    +(only.length===1?" В тарифе "+t+" один способ доступа — он выбран сразу.":""));
+  S.t=t;S.o=null;S.term=null;S.q=1;desired={term:null,q:1};               // новый выбор (А7-03): прежний срок не переносится
+  if(only.length===1){S.o=only[0].id;settle([],null);}                      // единственный способ выбирается сразу (Г-04)
   notice=msgs.join(" ");render();
 }
 function pickOffer(o){
@@ -625,13 +629,14 @@ function pickOffer(o){
   S.o=o.id;settle(msgs,prev);notice=msgs.join(" ");render();
 }
 function setTerm(n){
-  if(S.term===n)return;var prev=snapshot(),msgs=[];
-  desired.term=n;S.term=n;settle(msgs,prev);notice=msgs.join(" ");render();
+  if(S.term===n){desired.term=n;return;}                       // явный выбор запоминается, даже если срок уже стоял (А7-02)
+  var prev=snapshot(),msgs=[];
+  desired.term=n;S.term=n;settle(msgs,prev,true);notice=msgs.join(" ");render();
 }
 function changeQty(d){
   var o=cur(),i=o&&info(o,S.term);if(!o||!buyable(i))return;
   var mx=maxQty(o,i),q=S.q+d;if(q<1||q>mx)return;
-  S.q=q;desired.q=q;notice="";render();
+  S.q=q;desired.q=q;notice="";qtyAct=true;render();
 }
 
 /* ---------- фокус и положение: нажатый элемент остаётся в фокусе и на месте (А10-05, Г-07) ---------- */
@@ -648,15 +653,17 @@ function render(){
   renderTerms(o,i);renderQty(o,i);renderReq(o,i);renderBar(o,i);
   if(fk){var f=document.querySelector(fk);if(f&&f!==document.activeElement&&!f.hidden)f.focus({preventScroll:true});}
   if(anchor&&anchor.key){var a=document.querySelector(anchor.key);if(a){var d=a.getBoundingClientRect().top-anchor.top;if(Math.abs(d)>2)window.scrollBy(0,d);}}
-  anchor=null;
+  anchor=null;var qtyActed=qtyAct;qtyAct=false;
+  // объяснение предела у счётчика не должно уходить под закреплённую панель (А4-07): «+» уже неактивна, сдвиг безопасен
+  var m=$("qmsg");if(qtyActed&&!m.hidden&&m.offsetParent){var mb=m.getBoundingClientRect().bottom,lim=Math.min(innerHeight,$("bar").getBoundingClientRect().top)-6;if(mb>lim&&$("bar").getBoundingClientRect().top>innerHeight/2)window.scrollBy(0,mb-lim);}
 }
 function $(id){return document.getElementById(id)}
 function renderChips(){$("chips").innerHTML='<span>'+TARIFFS.length+" "+plural(TARIFFS.length,["тариф","тарифа","тарифов"])+'</span>';}
-function roving(group,items,selIdx,onPick){ // одна точка Tab, стрелки (Г-09)
+function roving(group,items,selIdx,onPick){ // одна точка Tab, стрелки (Г-09); onPick=null — стрелки только переводят фокус
   items.forEach(function(b,k){b.tabIndex=(k===(selIdx<0?0:selIdx))?0:-1;
     b.addEventListener("keydown",function(e){var n=items.length,j=-1;
       if(e.key==="ArrowDown"||e.key==="ArrowRight")j=(k+1)%n;else if(e.key==="ArrowUp"||e.key==="ArrowLeft")j=(k-1+n)%n;else if(e.key==="Home")j=0;else if(e.key==="End")j=n-1;
-      if(j<0)return;e.preventDefault();var t=items[j];t.focus();onPick(j,t);});});
+      if(j<0)return;e.preventDefault();var t=items[j];items.forEach(function(x){x.tabIndex=-1});t.tabIndex=0;t.focus();if(onPick)onPick(j,t);});});
 }
 function renderTariffs(){
   var tw=$("tariffs");tw.innerHTML="";var items=[];
@@ -664,12 +671,12 @@ function renderTariffs(){
     var b=document.createElement("button");b.textContent=t;b.setAttribute("aria-pressed",S.t===t);b.setAttribute("data-tariff",t);
     b.onclick=function(){act(b,function(){setTariff(t)})};tw.appendChild(b);items.push(b);
   });
-  roving(tw,items,TARIFFS.indexOf(S.t),function(j,b){act(b,function(){setTariff(TARIFFS[j])})});
+  roving(tw,items,TARIFFS.indexOf(S.t),null); // смена тарифа сбрасывает выбор — только по Enter/Space или нажатию
 }
 function renderOffers(sel){
   var ow=$("offers");ow.innerHTML="";var list=offersOf(S.t),items=[];
   list.forEach(function(x){
-    var row=document.createElement("div"),c=cheapest(x),one=keys(x).length===1;
+    var row=document.createElement("div"),c=cheapest(x),one=buyTerms(x).length===1;    // «от» — только если доступных цен несколько
     var right=c?'<span class="op"><span class="pr">'+(one?'':'от ')+eur(c.price)+'</span><span class="pt">за '+TL(c.term)+'</span></span>'
                :'<span class="op st">'+offerStatus(x)+'</span>';
     row.className="offer";row.setAttribute("data-offer-id",x.id);row.setAttribute("role","radio");row.setAttribute("aria-checked",!!sel&&sel.id===x.id);
@@ -746,8 +753,9 @@ $("qp").onclick=function(){changeQty(1)};
 function selLine(){var o=cur(),i=info(o,S.term);return S.t+" · "+o.name+" · "+TL(S.term)+(S.q>1?" × "+S.q:"")+" — "+eur(i.price*S.q);}
 $("noticeX").onclick=function(){notice="";$("noticeBox").hidden=true;var b=[$("buyNow"),$("notifyBar"),$("toCart")].filter(function(x){return !x.hidden&&!x.disabled})[0];if(b)b.focus();};
 $("toCart").onclick=function(){var o=cur();if(!o||!buyable(info(o,S.term)))return;
-  cart+=S.q;var n=$("cartN");n.hidden=false;n.textContent=cart;toast("В корзине: "+selLine()+". Корзина — в следующей схеме.");};
+  notice="";$("noticeBox").hidden=true;cart+=S.q;var n=$("cartN");n.hidden=false;n.textContent=cart;toast("В корзине: "+selLine()+". Корзина — в следующей схеме.");};
 $("buyNow").onclick=function(){var o=cur();if(!o||!buyable(info(o,S.term)))return;
+  notice="";$("noticeBox").hidden=true;
   toast("Оформление: "+selLine()+". Экран оформления — в следующей схеме.");};
 Array.prototype.forEach.call(document.querySelectorAll("[data-stub]"),function(b){
   b.onclick=function(){toast("«"+b.getAttribute("data-stub")+"» — раздел появится в следующих схемах.");};
@@ -790,7 +798,7 @@ function openCond(from){
     return '<li>'+TLG(k)+': '+esc(s)+'</li>';}).join("");
   sheet(S.t+" · "+o.name,
     '<div class="card"><b>Что вы получаете</b><span>'+esc(GET[o.kind](S.t))+'.</span></div>'+
-    '<div class="card"><b>Что нужно от вас</b><span>'+esc(reqText(o,1).replace(/^./,function(c){return c.toUpperCase()}))+'.</span>'+(o.max>1?'<span class="muted">В одном заказе — до '+o.max+' шт.</span>':'')+'</div>'+
+    '<div class="card"><b>Что нужно от вас</b><span>'+esc(reqText(o,S.o===o.id?S.q:1).replace(/^./,function(c){return c.toUpperCase()}))+'.</span>'+(o.max>1?'<span class="muted">В одном заказе — до '+o.max+' шт.</span>':'')+'</div>'+
     '<div class="card"><b>Ограничения</b>'+((o.privacy||o.limits.length)?'<ul>'+(o.privacy?'<li>'+esc(o.privacy)+'</li>':'')+o.limits.map(function(l){return '<li>'+esc(l)+'</li>'}).join("")+'</ul>':'<span class="muted">Особых ограничений не указано.</span>')+'</div>'+
     '<div class="card"><b>Сроки и наличие</b><ul>'+avail+'</ul></div>'+
     '<div class="card"><b>Выдача</b><span class="muted">Способ и срок выдачи будут указаны здесь после утверждения.</span></div>'+
@@ -801,8 +809,8 @@ function openNotify(o,n,from){
   var i=info(o,n);
   sheet("Уведомить о поступлении",
     '<div class="card"><b>'+esc(o.t+" · "+o.name+" · "+TL(n))+'</b><span class="muted">'+esc(i.st==="soon"?(i.eta?"Ожидается "+i.eta:"Ожидается, срок уточняется"):"Нет в наличии")+'</span></div>'+
-    '<form id="nf" class="field" novalidate><label for="nfEmail">Почта для уведомления</label><input id="nfEmail" type="email" autocomplete="email" placeholder="name@example.com">'+
-    '<span class="err" id="nfErr" hidden>Введите почту в формате name@example.com.</span>'+
+    '<form id="nf" class="field" novalidate><label for="nfEmail">Почта для уведомления</label><input id="nfEmail" aria-describedby="nfErr" type="email" autocomplete="email" placeholder="name@example.com">'+
+    '<span class="err" id="nfErr" role="alert" hidden>Введите почту в формате name@example.com.</span>'+
     '<button class="wide" type="submit">Проверить (демо)</button></form>'+
     '<span class="muted" style="font-size:13px">Демо-форма: в прототипе письмо не отправляется и почта не сохраняется.</span>',from);
   $("nf").onsubmit=function(e){e.preventDefault();var v=$("nfEmail").value.trim();

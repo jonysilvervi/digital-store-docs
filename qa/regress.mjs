@@ -271,6 +271,87 @@ async function main() {
     return { ok: shared.length > 0 && !bad.length, detail: bad.join("; ") || `проверено способов: ${shared.length}` };
   });
 
+  /* ---------- находки независимого повторного аудита 21.10 (на b507dc5 падают) ---------- */
+  const noticeText = async (p) => ((await vis(p, "#notice")) ? await txt(p, "#notice") : "");
+  await test("R-15", ["А7-03"], "Тариф A → B → A: прежний срок не восстанавливается", "регрессия", async (p) => {
+    await open(p, "&t=Plus&o=plus-own&term=12");
+    await p.click('#tariffs button[data-tariff="Pro"]'); await p.click('#tariffs button[data-tariff="Plus"]');
+    await p.click('.offer[data-offer-id="plus-own"]');
+    const t = await pressedTerm(p);
+    return { ok: t !== null && t !== 12, detail: `после возврата к Plus и выбора того же способа срок ${t}; прежний выбор был 12 мес.` };
+  });
+  await test("R-16", ["А7-03", "Г-04"], "Смена тарифа: срок не переносится, единственный способ выбран с доступным сроком", "регрессия", async (p) => {
+    const bad = [];
+    for (const [t, id] of [["Business", "biz-team"], ["Go", "go-own"]]) {
+      await open(p, "&t=Plus&o=plus-own&term=12");
+      await p.click(`#tariffs button[data-tariff="${t}"]`);
+      const sel = await p.evaluate(() => document.querySelector('.offer[aria-checked="true"]')?.dataset.offerId || null);
+      const term = await pressedTerm(p), canBuy = await vis(p, "#buyNow"), n = await noticeText(p);
+      if (sel !== id) bad.push(`${t}: выбран ${sel}`);
+      if (term === 12) bad.push(`${t}: перенесён срок 12 мес.`);
+      if (!canBuy) bad.push(`${t}: показан недоступный срок, хотя есть доступные`);
+      if (!n) bad.push(`${t}: нет пояснения о новом выборе`);
+    }
+    return { ok: !bad.length, detail: bad.join("; ") || "срок выбран заново, пояснение есть" };
+  });
+  await test("R-17", ["А7-01"], "Собственный выбор срока не сопровождается пояснением об автоматическом изменении", "регрессия", async (p) => {
+    await open(p, "&t=Plus&o=plus-own&term=1");
+    const seen = [];
+    for (const k of [3, 12, 3]) { await p.click(`#terms [data-term="${k}"]`); const n = await noticeText(p); if (n) seen.push(`${k} мес.: «${n}»`); }
+    return { ok: !seen.length, detail: seen.join("; ") || "пояснений нет" };
+  });
+  await test("R-18", ["А7-02"], "Явный выбор уже стоящего срока запоминается", "регрессия", async (p) => {
+    await open(p, "&t=Plus&o=plus-own&term=12");
+    await p.click('.offer[data-offer-id="plus-sep"]');
+    const auto = await pressedTerm(p);
+    await p.click(`#terms [data-term="${auto}"]`);
+    await p.click('.offer[data-offer-id="plus-own"]');
+    const t = await pressedTerm(p);
+    return { ok: t === auto, detail: `у «Отдельного аккаунта» срок стал ${auto}, покупатель нажал его; после возврата срок ${t}` };
+  });
+  await test("R-19", ["А4-07", "А10-05"], "Объяснение предела количества видно на экране, когда счётчик над панелью", "регрессия", async (p) => {
+    const bad = [];
+    for (const [w, h] of [[320, 700], [390, 740], [1280, 900]]) {
+      await p.setViewportSize({ width: w, height: h });
+      await open(p, "&t=Plus&o=plus-own&term=12&q=2");
+      await p.evaluate(() => { const st = document.querySelector("#qp").getBoundingClientRect(), bar = document.getElementById("bar").getBoundingClientRect(); window.scrollBy(0, st.bottom - bar.top + 4); });
+      await p.click("#qp");
+      const r = await p.evaluate(() => { const m = document.getElementById("qmsg"); if (!m || m.hidden || !m.offsetParent) return { shown: false };
+        const b = m.getBoundingClientRect(), pts = [[b.left + 4, b.top + 3], [b.left + 4, b.bottom - 3], [b.right - 4, b.bottom - 3]];
+        const all = pts.every(([x, y]) => { const e = document.elementFromPoint(x, y); return !!e && m.contains(e); });
+        return { shown: true, onScreen: b.top >= 0 && b.bottom <= innerHeight && all, text: m.innerText }; });
+      if (!r.shown) bad.push(`${w}px: объяснения нет`); else if (!r.onScreen) bad.push(`${w}px: «${r.text}» скрыто под панелью или за экраном`);
+    }
+    return { ok: !bad.length, detail: bad.join("; ") || "видно" };
+  });
+  await test("R-20", ["Г-09", "А7-01"], "Стрелки на тарифах переводят фокус, но не сбрасывают выбор", "регрессия", async (p) => {
+    await open(p, "&t=Plus&o=plus-own&term=3&q=2");
+    await p.focus('#tariffs button[data-tariff="Plus"]'); await p.keyboard.press("ArrowRight");
+    const st = await p.evaluate(() => ({ t: document.querySelector('#tariffs [aria-pressed="true"]')?.dataset.tariff, o: document.querySelector('.offer[aria-checked="true"]')?.dataset.offerId || null }));
+    const foc = await activeKey(p);
+    return { ok: st.t === "Plus" && st.o === "plus-own" && foc === "tariff:Pro", detail: `после стрелки: тариф ${st.t}, способ ${st.o}, фокус ${foc}` };
+  });
+  await test("R-21", ["Г-03"], "Счётчик корзины не мельче 13 px", "регрессия", async (p) => {
+    await open(p, "&t=Plus&o=plus-own&term=1"); await p.click("#toCart");
+    const fs = await p.evaluate(() => parseFloat(getComputedStyle(document.getElementById("cartN")).fontSize));
+    return { ok: fs >= 13, detail: `${fs} px` };
+  });
+  await test("R-22", ["А11-06"], "Пояснение о смене тарифа грамматически согласовано", "регрессия", async (p) => {
+    const bad = [];
+    for (const q of ["&t=Plus&o=plus-own&term=1", "&t=Plus&q=1"]) {
+      await open(p, q); await p.click('#tariffs button[data-tariff="Pro"]');
+      const n = await noticeText(p);
+      // одно сбрасываемое значение с глаголом во множественном числе — ошибка согласования
+      if (/:\s*(способ доступа|срок|количество)\s+выбираются/i.test(n)) bad.push(`«${n}»`);
+    }
+    return { ok: !bad.length, detail: bad.join("; ") || "согласовано" };
+  });
+  await test("R-23", ["А3-02"], "«от» у способа — только если доступных цен несколько", "регрессия", async (p) => {
+    await open(p, "&t=Plus"); // «Место в общем аккаунте»: доступен только срок 1 мес.
+    const t = await txt(p, '.offer[data-offer-id="plus-shared"] .op');
+    return { ok: !!t && !/^от\s/.test(t), detail: `«${t}»` };
+  });
+
   await test("G-01", ["А7-03"], "Тариф A → B → A: сброс с пояснением, прежний выбор не восстанавливается", "охранный", async (p) => {
     await open(p, "&t=Plus&o=plus-own&term=3&q=2");
     await p.click('#tariffs button[data-tariff="Pro"]');
