@@ -386,6 +386,78 @@ async function main() {
     return { ok: !bad.length, detail: bad.join("; ") || `12 → ${t1} → ${t2}; синтетика верна (в т. ч. 12 → 3 → 6 → 12)` };
   });
 
+  /* ---------- собственный повторный аудит после публикации 2519bae (на 2519bae падают) ---------- */
+  await test("R-25", ["А10-05"], "Фокус с клавиатуры не уходит под закреплённую панель", "регрессия", async (p) => {
+    const bad = [];
+    for (const [w, h] of [[390, 700], [320, 568], [1280, 800]]) {
+      await p.setViewportSize({ width: w, height: h }); await open(p, "&t=Plus&o=plus-own&term=3&q=2");
+      for (let i = 0; i < 30; i++) {
+        await p.keyboard.press("Tab");
+        const r = await p.evaluate(() => { const e = document.activeElement, bar = document.getElementById("bar"); if (!e || e === document.body || bar.contains(e)) return null;
+          const a = e.getBoundingClientRect(), b = bar.getBoundingClientRect(); return (a.bottom > b.top + 1 && a.top < b.bottom) || a.top < 0 || a.bottom > innerHeight ? (e.id || e.dataset.term || e.dataset.offerId || e.textContent.trim().slice(0, 16)) : null; });
+        if (r) bad.push(`${w}×${h}: ${r}`);
+      }
+    }
+    return { ok: !bad.length, detail: bad.join("; ") || "фокус всегда виден" };
+  });
+  await test("R-26", ["А7-01", "А7-03", "Г-04"], "Смена тарифа после автоматического выбора: пояснение только о том, что выбрал покупатель", "регрессия", async (p) => {
+    const bad = [];
+    await p.goto(BASE); await p.click('#tariffs button[data-tariff="Go"]'); await p.click('#tariffs button[data-tariff="Plus"]');
+    const n1 = await noticeText(p); if (n1) bad.push(`Go (выбран сам) → Plus: «${n1}»`);
+    await p.goto(BASE); await p.click('#tariffs button[data-tariff="Go"]'); await p.click("#qp"); await p.click('#tariffs button[data-tariff="Plus"]');
+    const n2 = await noticeText(p); if (!/количество/i.test(n2) || /способ/i.test(n2)) bad.push(`Go, 2 шт. → Plus: «${n2}»`);
+    return { ok: !bad.length, detail: bad.join("; ") || "верно" };
+  });
+  await test("R-27", ["А7-01", "А4-07"], "Пояснение о количестве не ссылается на счётчик, которого нет", "регрессия", async (p) => {
+    await open(p, "&t=Pro&o=pro-shared&term=1&q=4");
+    await p.click('.offer[data-offer-id="pro-own"]');
+    const n = await noticeText(p), counter = await vis(p, "#qtySec");
+    const ok = !counter && !!n && /1/.test(n) && !/уменьшено|шт\./i.test(n);
+    return { ok, detail: `счётчик виден: ${counter}; пояснение «${n}»` };
+  });
+  await test("R-28", ["Г-02", "А6-05"], "Единицы товара названы так же, как в требованиях, без «шт.»", "регрессия", async (p) => {
+    const bad = [];
+    await open(p, "&t=Plus&o=plus-sep&term=1&q=2"); const m = await txt(p, "#qmsg");
+    if (/шт/.test(m) || !/аккаунт/.test(m)) bad.push(`у счётчика: «${m}»`);
+    await open(p, "&t=Plus&o=plus-own&term=3"); const t = await txt(p, "#terms");
+    if (/шт/.test(t) || !/за 1 активацию/.test(t)) bad.push(`в сроках: «${t}»`);
+    await open(p, "&t=Plus&o=plus-own&term=3&q=2&sheet=cond"); const sh = await txt(p, "#shB");
+    if (/шт\./.test(sh)) bad.push("в «Все условия» есть «шт.»");
+    return { ok: !bad.length, detail: bad.join("; ") || "единицы согласованы" };
+  });
+  await test("R-29", ["А6-03"], "Требование для нескольких активаций не противоречит само себе", "регрессия", async (p) => {
+    await open(p, "&t=Plus&o=plus-own&term=1&q=3"); const r = await txt(p, "#req");
+    return { ok: /3 активаций/.test(r) && !/вашего аккаунта.*кажд/i.test(r), detail: `«${r}»` };
+  });
+  await test("R-30", ["А8-04", "А10-01"], "Панель с пояснением на маленьком экране (320×568) занимает не больше 30% высоты", "регрессия", async (p) => {
+    await p.setViewportSize({ width: 320, height: 568 }); await open(p, "&t=Plus&o=plus-own&term=12&q=3");
+    await p.click('.offer[data-offer-id="plus-sep"]');
+    const h = await p.evaluate(() => Math.round(document.getElementById("bar").getBoundingClientRect().height)), n = await noticeText(p);
+    return { ok: !!n && h <= 0.3 * 568, detail: `высота панели ${h} px из 568 (${Math.round(h / 5.68)}%), пояснение: ${n ? "есть" : "нет"}` };
+  });
+  await test("R-31", ["А7-03"], "Смена тарифа после явного выбора срока 1 мес.: пояснение упоминает срок", "регрессия", async (p) => {
+    await p.goto(BASE); await p.click('.offer[data-offer-id="plus-own"]'); await p.click('#terms [data-term="1"]'); await p.click('#tariffs button[data-tariff="Pro"]');
+    const n = await noticeText(p); return { ok: /срок/i.test(n), detail: `«${n}»` };
+  });
+  await test("R-32", ["А12-01", "А1-01"], "Логотип и путь к товару — точки входа с сообщением, что раздел появится позже", "регрессия", async (p) => {
+    await p.goto(BASE); const bad = [];
+    for (const name of ["Каталог", "ИИ-сервисы"]) {
+      const el = p.locator(".crumbs").getByText(name, { exact: true });
+      const tag = await el.evaluate((e) => e.tagName).catch(() => "нет");
+      if (tag !== "BUTTON" && tag !== "A") { bad.push(`«${name}» — не элемент управления`); continue; }
+      await el.click(); const t = await txt(p, "#toast"); if (!t.includes(name)) bad.push(`«${name}»: нет сообщения`);
+    }
+    const logo = p.locator(".hdr").getByText("Логотип"); const lt = await logo.evaluate((e) => (e.closest("button,a") || {}).tagName || "нет");
+    if (lt === "нет") bad.push("логотип не нажимается"); else { await logo.click(); if (!(await txt(p, "#toast"))) bad.push("логотип: нет сообщения"); }
+    return { ok: !bad.length, detail: bad.join("; ") || "верно" };
+  });
+  await test("R-33", ["А8-05"], "Итог на компьютере: строка состава заказа не разрывается", "регрессия", async (p) => {
+    await p.setViewportSize({ width: 1280, height: 900 }); await open(p, "&t=Plus&o=plus-own&term=12&q=3");
+    const r = await p.evaluate(() => [...document.querySelectorAll("#sum span")].map((s) => ({ t: s.innerText, lines: Math.round(s.getBoundingClientRect().height / parseFloat(getComputedStyle(s).lineHeight || 17)) })));
+    const bad = r.filter((x) => x.lines > 1);
+    return { ok: r.length >= 2 && !bad.length, detail: r.map((x) => `«${x.t}» — строк ${x.lines}`).join("; ") };
+  });
+
   await test("G-01", ["А7-03"], "Тариф A → B → A: сброс с пояснением, прежний выбор не восстанавливается", "охранный", async (p) => {
     await open(p, "&t=Plus&o=plus-own&term=3&q=2");
     await p.click('#tariffs button[data-tariff="Pro"]');

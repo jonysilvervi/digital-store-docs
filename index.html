@@ -37,7 +37,8 @@ button[aria-disabled="true"]{cursor:not-allowed}
 
 /* шапка */
 .hdr{display:flex;align-items:center;gap:2px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-bottom:8px;border-bottom:1px solid var(--line)}
-.logo{border:1.5px dashed var(--ink2);border-radius:6px;padding:4px 10px;font-size:13px;color:var(--ink2);margin-right:auto;white-space:nowrap}
+.logob{margin-right:auto;min-height:44px;display:flex;align-items:center}
+.logo{border:1.5px dashed var(--ink2);border-radius:6px;padding:4px 10px;font-size:13px;color:var(--ink2);white-space:nowrap}
 .ib{position:relative;width:44px;height:44px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
 .ib svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--sel);color:var(--selInk);font-size:13px;display:grid;place-items:center;padding:0 4px;font-variant-numeric:tabular-nums}
@@ -46,7 +47,8 @@ button[aria-disabled="true"]{cursor:not-allowed}
 
 /* раскладка: телефон — одна колонка; дети колонки покупки встают в общий поток */
 .pdp{display:flex;flex-direction:column}
-.crumbs{order:0;font-size:13px;color:var(--ink2);padding-top:10px}
+.crumbs{order:0;font-size:13px;color:var(--ink2);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.cr{min-height:44px;font-size:13px;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
 .hero{order:1;margin-top:10px}
 .purchase{display:contents}
 .purchase>*{order:2}
@@ -97,17 +99,19 @@ button[aria-disabled="true"]{cursor:not-allowed}
 
 .notice{flex:1 0 100%;display:flex;align-items:flex-start;gap:4px;font-size:var(--fs-s);color:var(--ink);background:var(--fill2);border:1px solid var(--line);padding:0 0 0 10px;border-radius:10px}
 .notice[hidden]{display:none}
+html{scroll-padding-bottom:calc(var(--barH,0px) + 12px)}
 .notice p{margin:0;padding:8px 0;flex:1;min-width:0}
 .nx{flex:0 0 44px;height:44px;border-radius:10px;font-size:15px;color:var(--ink)}
+@media (max-height:700px){.notice{font-size:13px;line-height:1.3}.notice p{padding:5px 0}.bar{padding-top:6px;gap:6px}.sum span{line-height:1.25}}
 
 /* сроки выбранного способа: строки с точной ценой */
 .terms{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .term{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;min-height:48px;text-align:left;width:100%}
 .term+.term{border-top:1px solid var(--line)}
-.term .tl{font-weight:600}
-.term .tr{text-align:right;line-height:1.25}
+.term .tl{font-weight:600;white-space:nowrap}
+.term .tr{text-align:right;line-height:1.25;min-width:0}
 .term .tp{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.term .tm{display:block;font-size:var(--fs-s);color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.term .tm{display:block;font-size:var(--fs-s);color:var(--ink2);font-variant-numeric:tabular-nums;}
 .term .ts{font-size:var(--fs-s);color:var(--ink2)}
 .term[aria-pressed="true"]{background:var(--fill2);box-shadow:inset 0 0 0 1.5px var(--ink)}
 .term[aria-pressed="true"] .tl::before{content:"✓ ";font-weight:700}
@@ -165,6 +169,7 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
   .purchase{display:block;grid-column:2;grid-row:2 / span 2;margin-top:12px;border:1px solid var(--line);border-radius:16px;padding:0 18px}
   .purchase>.sec:first-child{margin-top:16px}
   .bar{margin:20px -18px 0;border-radius:0 0 16px 16px;padding-left:18px;padding-right:18px}
+  .sum{flex:1 1 100%}.acts{flex:1 1 100%}.acts .buy{flex:1}   /* в узкой колонке итог — отдельной строкой, без разрывов */
 }
 
 /* листы */
@@ -193,7 +198,7 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
 <div class="page" id="page">
 
   <header class="hdr g">
-    <span class="logo">Логотип</span>
+    <button class="logob" data-stub="Главная" aria-label="Главная"><span class="logo">Логотип</span></button>
     <button class="ib" data-stub="Поиск" aria-label="Поиск"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
     <button class="ib" data-stub="Кабинет" aria-label="Кабинет"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.4-3.6 4.2-5.3 7.5-5.3s6.1 1.7 7.5 5.3"/></svg></button>
     <button class="ib" data-stub="Корзина" aria-label="Корзина"><svg viewBox="0 0 24 24"><path d="M3.5 4.5h2.2l2.1 10.2h10.4l1.9-7.2H7"/><circle cx="9.5" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/></svg><span class="badge" id="cartN" hidden>0</span></button>
@@ -206,7 +211,7 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
   </div>
 
   <main class="pdp g">
-    <nav class="crumbs" aria-label="Путь">Каталог › ИИ-сервисы › ChatGPT</nav>
+    <nav class="crumbs" aria-label="Путь"><button class="cr" data-stub="Каталог">Каталог</button> › <button class="cr" data-stub="ИИ-сервисы">ИИ-сервисы</button> › <span aria-current="page">ChatGPT</span></nav>
 
     <section class="hero" aria-labelledby="hP">
       <div class="cover">
@@ -304,7 +309,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "активация",
     "активации",
     "активаций",
-    true
+    true,
+    "активацию"
    ],
    "terms": {
     "1": {
@@ -323,7 +329,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
    "req": [
     {
      "text": "почта вашего аккаунта ChatGPT",
-     "scope": "unit"
+     "scope": "unit",
+     "many": "почта аккаунта ChatGPT"
     }
    ],
    "limits": [
@@ -341,7 +348,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "активация",
     "активации",
     "активаций",
-    true
+    true,
+    "активацию"
    ],
    "terms": {
     "1": {
@@ -360,7 +368,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
    "req": [
     {
      "text": "почта вашего аккаунта ChatGPT",
-     "scope": "unit"
+     "scope": "unit",
+     "many": "почта аккаунта ChatGPT"
     }
    ],
    "limits": [
@@ -378,7 +387,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "аккаунт",
     "аккаунта",
     "аккаунтов",
-    false
+    false,
+    "аккаунт"
    ],
    "terms": {
     "1": {
@@ -407,7 +417,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "место",
     "места",
     "мест",
-    false
+    false,
+    "место"
    ],
    "terms": {
     "1": {
@@ -436,7 +447,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "активация",
     "активации",
     "активаций",
-    true
+    true,
+    "активацию"
    ],
    "terms": {
     "1": {
@@ -465,7 +477,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "место",
     "места",
     "мест",
-    false
+    false,
+    "место"
    ],
    "terms": {
     "1": {
@@ -495,7 +508,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "аккаунт",
     "аккаунта",
     "аккаунтов",
-    false
+    false,
+    "аккаунт"
    ],
    "terms": {
     "1": {
@@ -523,7 +537,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
     "место",
     "места",
     "мест",
-    false
+    false,
+    "место"
    ],
    "terms": {
     "1": {
@@ -557,7 +572,8 @@ details p{margin:0 0 13px;color:var(--ink2);font-size:14px}
 (function(){
 "use strict";
 /* Данные — в блоке #catalog. У каждого способа свои сроки: срока нет в terms — он не продаётся.
-   Наличие срока: ok, low (left — известный остаток), soon (eta или null), out. privacy — предупреждение, видимое до выбора. */
+   Наличие срока: ok, low (left — известный остаток), soon (eta или null), out. privacy — предупреждение, видимое до выбора.
+   unit — [1, 2–4, 5+ (и после «из», «до»), женский род, винительный ед.]; req.many — текст требования при нескольких штуках. */
 var CATALOG=JSON.parse(document.getElementById("catalog").textContent);
 var TARIFFS=CATALOG.tariffs, OFFERS=CATALOG.offers;
 var GET={own:function(t){return "Подписка "+t+" на вашем аккаунте ChatGPT"},
@@ -568,6 +584,8 @@ var GET={own:function(t){return "Подписка "+t+" на вашем акка
 /* ---------- слова и числа ---------- */
 function plural(n,f){var a=n%10,b=n%100;return (a===1&&b!==11)?f[0]:(a>=2&&a<=4&&(b<10||b>=20))?f[1]:f[2]}
 function genAfterIz(n,u){return (n%10===1&&n%100!==11)?u[1]:u[2]}           // «из 21 места», «из 5 мест»
+function unitN(o,n){return n+"\u00a0"+plural(n,[o.unit[0],o.unit[1],o.unit[2]])}          // «2 аккаунта», «5 мест»
+function unitGen(o,n){return n+"\u00a0"+genAfterIz(n,o.unit)}                           // «до 3 активаций», «до 21 места»
 function TL(n){return n+"\u00a0мес."}                                              // компактно (Г-02)
 function TLG(n){return n+" "+plural(n,["месяц","месяца","месяцев"])}          // в пояснениях — полностью
 function eur(n){var s=(Math.round(n*100)/100).toFixed(2).split(".");return s[0].replace(/\B(?=(\d{3})+(?!\d))/g," ")+","+s[1]+" €"}
@@ -589,7 +607,7 @@ function tariffCheapest(t){var best=null;offersOf(t).forEach(function(o){var c=c
 /* Выбор пользователя. desired — последние явно выбранные срок и количество внутри текущего тарифа (реестр А7). */
 var INIT={t:"Plus",term:1,q:1}; // тариф выбран заранее только для прототипа, это не рекомендация
 var S, desired, notice="", cart=0, opener=null, anchor=null, qtyAct=false;
-function resetState(){S={t:INIT.t,o:null,term:INIT.term,q:1};desired={term:null,q:1};notice="";}
+function resetState(){S={t:INIT.t,o:null,autoO:false,term:INIT.term,q:1};desired={term:null,q:1};notice="";}
 resetState();
 function cur(){return S.o?byId(S.o):null}
 
@@ -605,9 +623,13 @@ function settle(msgs,prev,direct){
   S.term=n;
   var i=info(o,n);
   if(!buyable(i)){S.q=desired.q;return;}                       // количество не показывается, но и не теряется
+  var prevQ0=prev&&prev.qShown;
+  if(o.max===1){                                               // счётчика нет: объясняем без ссылки на него
+    if(desired.q>1&&prev&&prev.o&&prev.o!==o.id&&prevQ0!==1)msgs.push("Количество 1: у этого способа в одном заказе только 1 "+o.unit[0]+".");
+    S.q=1;return;}
   var mx=maxQty(o,i),q=Math.min(desired.q,mx);
   var prevQ=prev&&prev.qShown;                                 // количество, которое было видно до действия
-  if(q<desired.q&&prevQ!==q)msgs.push("Количество уменьшено до "+q+": "+(i.st==="low"&&i.left<o.max?"в наличии только "+i.left+" шт.":"в одном заказе не больше "+o.max+" шт."));
+  if(q<desired.q&&prevQ!==q)msgs.push("Количество уменьшено до "+q+": "+(i.st==="low"&&i.left<o.max?"в наличии только "+unitN(o,i.left)+".":"в одном заказе — до "+unitGen(o,o.max)+"."));
   else if(q===desired.q&&prev&&prev.o&&q>1&&prevQ!==q)msgs.push("Количество снова "+q+", как вы выбирали.");   // и когда счётчик был скрыт
   S.q=q;
 }
@@ -620,17 +642,17 @@ function snapshot(){return {o:S.o,term:S.term,qShown:shownQty()}}
 
 function setTariff(t){
   if(S.t===t)return;var msgs=[],had=[];
-  if(S.o)had.push("способ доступа");if(S.o&&S.term!==INIT.term)had.push("срок");if(S.q>1)had.push("количество");
+  if(S.o&&!S.autoO)had.push("способ доступа");if(S.o&&desired.term!=null)had.push("срок");if(desired.q>1)had.push("количество");   // только то, что выбрал покупатель
   var only=offersOf(t);
   if(had.length)msgs.push("Тариф изменён: "+(had.length>1?had.slice(0,-1).join(", ")+" и "+had[had.length-1]+" выбираются":had[0]+" выбирается")+" заново."
     +(only.length===1?" В тарифе "+t+" один способ доступа — он выбран сразу.":""));
   S.t=t;S.o=null;S.term=null;S.q=1;desired={term:null,q:1};               // новый выбор (А7-03): прежний срок не переносится
-  if(only.length===1){S.o=only[0].id;settle([],null);}                      // единственный способ выбирается сразу (Г-04)
+  if(only.length===1){S.o=only[0].id;S.autoO=true;settle([],null);}        // единственный способ выбирается сразу (Г-04)
   notice=msgs.join(" ");render();
 }
 function pickOffer(o){
   if(S.o===o.id)return;var prev=snapshot(),msgs=[];
-  S.o=o.id;settle(msgs,prev);notice=msgs.join(" ");render();
+  S.o=o.id;S.autoO=false;settle(msgs,prev);notice=msgs.join(" ");render();
 }
 function setTerm(n){
   if(S.term===n){desired.term=n;if(notice){notice="";render();}return;}   // собственное действие снимает старое пояснение                       // явный выбор запоминается, даже если срок уже стоял (А7-02)
@@ -655,6 +677,7 @@ function render(){
   renderChips();renderTariffs();renderOffers(o);renderDetails(o,i);
   $("noticeBox").hidden=!notice;$("notice").textContent=notice;
   renderTerms(o,i);renderQty(o,i);renderReq(o,i);renderBar(o,i);
+  syncBarH();
   if(fk){var f=document.querySelector(fk);if(f&&f!==document.activeElement&&!f.hidden)f.focus({preventScroll:true});}
   if(anchor&&anchor.key){var a=document.querySelector(anchor.key);if(a){var d=a.getBoundingClientRect().top-anchor.top;if(Math.abs(d)>2)window.scrollBy(0,d);}}
   anchor=null;var qtyActed=qtyAct;qtyAct=false;
@@ -662,6 +685,9 @@ function render(){
   var m=$("qmsg");if(qtyActed&&!m.hidden&&m.offsetParent){var mb=m.getBoundingClientRect().bottom,lim=Math.min(innerHeight,$("bar").getBoundingClientRect().top)-6;if(mb>lim&&$("bar").getBoundingClientRect().top>innerHeight/2)window.scrollBy(0,mb-lim);}
 }
 function $(id){return document.getElementById(id)}
+// высота закреплённой панели — отступ прокрутки, чтобы фокус с клавиатуры не уходил под панель
+function syncBarH(){document.documentElement.style.setProperty("--barH",$("bar").getBoundingClientRect().height+"px")}
+if(window.ResizeObserver)new ResizeObserver(syncBarH).observe(document.getElementById("bar"));
 function renderChips(){$("chips").innerHTML='<span>'+TARIFFS.length+" "+plural(TARIFFS.length,["тариф","тарифа","тарифов"])+'</span>';}
 function roving(group,items,selIdx,onPick){ // одна точка Tab, стрелки (Г-09); onPick=null — стрелки только переводят фокус
   items.forEach(function(b,k){b.tabIndex=(k===(selIdx<0?0:selIdx))?0:-1;
@@ -708,7 +734,7 @@ function renderTerms(o,i){
     var ni=info(o,n),b=document.createElement("button");
     b.className="term";b.setAttribute("aria-pressed",S.term===n);b.setAttribute("data-term",n);
     var right='';
-    if(buyable(ni))right='<span class="tp">'+eur(ni.price)+'</span>'+(n>1?'<span class="tm">≈ '+eur(ni.price/n)+' в мес. за 1 шт.</span>':'');
+    if(buyable(ni))right='<span class="tp">'+eur(ni.price)+'</span>'+(n>1?'<span class="tm">≈ '+eur(ni.price/n)+'\u00a0в\u00a0мес. за\u00a01\u00a0'+o.unit[4]+'</span>':'');
     else if(anyBuy)right='<span class="ts">'+stText(ni)+'</span>';
     b.innerHTML='<span class="tl">'+TL(n)+'</span><span class="tr">'+right+'</span>';
     b.onclick=function(){act(b,function(){setTerm(n)})};sw.appendChild(b);items.push(b);
@@ -722,11 +748,11 @@ function renderQty(o,i){
   $("qm").setAttribute("aria-disabled",S.q<=1);$("qp").setAttribute("aria-disabled",S.q>=mx);
   // ограничение — только когда оно существенно: «+» упёрлась в предел
   var m=$("qmsg");m.hidden=!(S.q>=mx);
-  m.textContent=stock?("В наличии "+mx+" шт."):("В одном заказе — не больше "+mx+" шт.");
+  m.textContent=stock?("В наличии "+unitN(o,mx)+"."):("В одном заказе — до "+unitGen(o,mx)+".");
 }
 function unitPhrase(o,r,q){
   if(r.scope!=="unit"||q<=1)return r.text;
-  return r.text+" — для "+(o.unit[3]?"каждой":"каждого")+" из "+q+" "+genAfterIz(q,o.unit);
+  return (r.many||r.text)+" — отдельно для "+(o.unit[3]?"каждой":"каждого")+" из "+q+" "+genAfterIz(q,o.unit);
 }
 function reqText(o,q){var parts=o.req.map(function(r){return unitPhrase(o,r,q)});return parts.length?parts.join(", "):"только почта для получения заказа"}
 function renderReq(o,i){var r=$("req"),on=!!o&&buyable(i);r.hidden=!on;if(!on)return;r.innerHTML='<b>Понадобится:</b> '+esc(reqText(o,S.q))+'.';}
@@ -798,11 +824,11 @@ $("openTar").onclick=function(){
 function openCond(from){
   var o=cur();if(!o)return;
   var avail=keys(o).map(function(k){var x=info(o,k);
-    var s=x.st==="ok"?eur(x.price):x.st==="low"?eur(x.price)+", в наличии "+x.left+" шт.":x.st==="soon"?(x.eta?"ожидается "+x.eta:"ожидается, срок уточняется"):"нет в наличии";
+    var s=x.st==="ok"?eur(x.price):x.st==="low"?eur(x.price)+", в наличии "+unitN(o,x.left):x.st==="soon"?(x.eta?"ожидается "+x.eta:"ожидается, срок уточняется"):"нет в наличии";
     return '<li>'+TLG(k)+': '+esc(s)+'</li>';}).join("");
   sheet(S.t+" · "+o.name,
     '<div class="card"><b>Что вы получаете</b><span>'+esc(GET[o.kind](S.t))+'.</span></div>'+
-    '<div class="card"><b>Что нужно от вас</b><span>'+esc(reqText(o,S.o===o.id?S.q:1).replace(/^./,function(c){return c.toUpperCase()}))+'.</span>'+(o.max>1?'<span class="muted">В одном заказе — до '+o.max+' шт.</span>':'')+'</div>'+
+    '<div class="card"><b>Что нужно от вас</b><span>'+esc(reqText(o,S.o===o.id?S.q:1).replace(/^./,function(c){return c.toUpperCase()}))+'.</span>'+(o.max>1?'<span class="muted">В одном заказе — до '+esc(unitGen(o,o.max))+'.</span>':'')+'</div>'+
     '<div class="card"><b>Ограничения</b>'+((o.privacy||o.limits.length)?'<ul>'+(o.privacy?'<li>'+esc(o.privacy)+'</li>':'')+o.limits.map(function(l){return '<li>'+esc(l)+'</li>'}).join("")+'</ul>':'<span class="muted">Особых ограничений не указано.</span>')+'</div>'+
     '<div class="card"><b>Сроки и наличие</b><ul>'+avail+'</ul></div>'+
     '<div class="card"><b>Выдача</b><span class="muted">Способ и срок выдачи будут указаны здесь после утверждения.</span></div>'+
@@ -827,9 +853,9 @@ function openNotify(o,n,from){
 var DEMO=/(^|[?&])demo(=|&|$)/.test(location.search.slice(1));
 var PRESETS=[
  ["","Способ доступа не выбран","Plus — выбран заранее только для прототипа"],
- ["&t=Plus&o=plus-own&term=3&q=2","Полный выбор","Plus · На ваш аккаунт · 3 мес. · 2 шт."],
- ["&t=Plus&o=plus-sep&term=1&q=2","Ограничено наличием","Plus · Отдельный аккаунт · 1 мес. · 2 шт."],
- ["&t=Plus&o=plus-own&term=1&q=3","Ограничено лимитом заказа","Plus · На ваш аккаунт · 1 мес. · 3 шт."],
+ ["&t=Plus&o=plus-own&term=3&q=2","Полный выбор","Plus · На ваш аккаунт · 3 мес. · 2 активации"],
+ ["&t=Plus&o=plus-sep&term=1&q=2","Ограничено наличием","Plus · Отдельный аккаунт · 1 мес. · 2 аккаунта"],
+ ["&t=Plus&o=plus-own&term=1&q=3","Ограничено лимитом заказа","Plus · На ваш аккаунт · 1 мес. · 3 активации"],
  ["&t=Plus&o=plus-shared&term=3","Срок временно отсутствует","Plus · Место в общем аккаунте · 3 мес."],
  ["&t=Pro&o=pro-sep&term=1","Способ доступа отсутствует целиком","Pro · Отдельный аккаунт"],
  ["&t=Pro&o=pro-shared&term=3","Ожидается, прогноз известен","Pro · Место в общем аккаунте · 3 мес."],
@@ -840,10 +866,10 @@ var PRESETS=[
 function applyUrlState(search){
   var p=new URLSearchParams(search);
   var t=p.get("t");if(t&&TARIFFS.indexOf(t)>=0)S.t=t;
-  var only=offersOf(S.t);if(only.length===1)S.o=only[0].id;
+  var only=offersOf(S.t);if(only.length===1){S.o=only[0].id;S.autoO=true;}
   var n=+p.get("term");if(n){S.term=n;desired.term=n;}
   var q=+p.get("q");if(q>1&&q<1000)desired.q=Math.floor(q);
-  var o=byId(p.get("o"));if(o&&o.t===S.t)S.o=o.id;
+  var o=byId(p.get("o"));if(o&&o.t===S.t&&o.id!==S.o){S.o=o.id;S.autoO=false;}
   if(S.o)settle([],null);
   return p.get("sheet");
 }
@@ -865,7 +891,7 @@ if(DEMO){
     Array.prototype.forEach.call(document.querySelectorAll("details"),function(d){d.open=false});resetTo(search);return true;};
 }
 // единственный способ выбирается сразу и без тестового режима
-(function(){var only=offersOf(S.t);if(only.length===1){S.o=only[0].id;settle([],null);}})();
+(function(){var only=offersOf(S.t);if(only.length===1){S.o=only[0].id;S.autoO=true;settle([],null);}})();
 var startSheet=DEMO?applyUrlState(location.search):null;
 render();
 openStartSheet(startSheet);

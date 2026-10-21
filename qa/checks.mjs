@@ -93,7 +93,7 @@ async function selectedProblems(page, cat, o, k) {
     if (!bt.includes(TC(b.k))) p.push(`нет подписи срока ${TC(b.k)}`);
     if (buyable(bi)) {
       if (!bt.includes(norm(eur(bi.price)))) p.push(`у срока ${TC(b.k)} нет цены ${norm(eur(bi.price))}`);
-      if (b.k > 1 && !bt.includes(`≈ ${norm(eur(bi.price / b.k))} в мес. за 1 шт.`)) p.push(`у срока ${TC(b.k)} нет месячного эквивалента единицы`);
+      if (b.k > 1 && !bt.includes(`≈ ${norm(eur(bi.price / b.k))} в мес. за 1 ${o.unit[4] || "шт."}`)) p.push(`у срока ${TC(b.k)} нет месячного эквивалента единицы`);
       if (b.k === 1 && bt.includes("≈")) p.push("лишний месячный эквивалент у срока 1 мес.");
       if (/наличии|Ожидается/i.test(bt)) p.push(`у доступного срока ${TC(b.k)} лишний статус`);
     } else {
