@@ -1,5 +1,5 @@
 // Проверки страницы товара. Набор строится из данных каталога, а ожидаемые значения считает oracle.mjs.
-import { U, go, TL, TLG, eur, norm, offersOf, termsOf, tariffTerms, info, buyable, maxEff, autoTerm, minPrice, stateClasses } from "./oracle.mjs";
+import { U, go, TL, eur, norm, offersOf, termsOf, tariffTerms, info, buyable, maxEff, buyTerms, fromPrice, offerStatus, preferTerm, minFrom, stateClasses } from "./oracle.mjs";
 
 const txt = async (page, sel) => norm(await page.locator(sel).first().innerText().catch(() => ""));
 const vis = (page, sel) => page.locator(sel).first().isVisible().catch(() => false);
@@ -14,48 +14,51 @@ function watchErrors(page, rec, label) {
   page.on("pageerror", (e) => rec(`Ошибка JavaScript (${label})`, false, String(e)));
 }
 
-/* ---------- 1. Логика каталога: каждое предложение × каждый срок тарифа ---------- */
+/* ---------- 1. Логика каталога: тариф → способ доступа → срок → количество, по всем данным ---------- */
+const opText = (o) => { const fp = fromPrice(o); return fp == null ? offerStatus(o) : (termsOf(o).length > 1 ? "от " : "") + norm(eur(fp)); };
+
 export async function logicSuite(browser, cat, base, results) {
   const rec = makeRec(results, "Логика выбора и цены", base);
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
   const page = await ctx.newPage(); page.setDefaultTimeout(4000); watchErrors(page, rec, "логика");
-  let n = 0;
+  let n = 0, first = true;
   for (const t of cat.tariffs) {
-    const terms = tariffTerms(cat, t);
-    for (const term of terms) {
-      const path = `?demo&t=${encodeURIComponent(t)}&term=${term}`;
-      await go(page, base, path, term === terms[0]); // первый срок тарифа — настоящая загрузка, дальше — мгновенный сброс
-      // строки предложений без выбора
-      const rows = await page.$$eval(".offer", (els) => els.map((e) => ({ id: e.dataset.offerId, text: e.innerText, checked: e.getAttribute("aria-checked") })));
-      const exp = offersOf(cat, t);
-      rec(`${t} · ${TL(term)}: показаны все предложения тарифа`, rows.map((r) => r.id).join() === exp.map((o) => o.id).join(), `ожидалось ${exp.length}, на странице ${rows.length}`, { url: path, sel: "#offers" });
-      for (const o of exp) {
-        const r = rows.find((x) => x.id === o.id); if (!r) continue;
-        const problems = rowProblems(o, term, norm(r.text), false); n++;
-        rec(`${t} · ${o.name} · ${TL(term)}: строка предложения`, !problems.length, problems.join("; ") || norm(r.text), { url: path, sel: `.offer[data-offer-id="${o.id}"]` });
-      }
-      const mp = minPrice(cat, t, term), sum = await txt(page, "#sum");
-      const okBar = mp != null ? sum.includes(`от ${norm(eur(mp))}`) && sum.includes(`за ${TL(term)}`) : sum.includes("Нет доступных");
-      rec(`${t} · ${TL(term)}: панель без выбора`, okBar && (await dis(page, "#toCart")) && (await dis(page, "#buyNow")), `«${sum}», кнопки должны быть неактивны`, { url: path, sel: "#bar" });
+    const path = `?demo&t=${encodeURIComponent(t)}`;
+    await go(page, base, path, first); first = false;
+    const rows = await page.$$eval(".offer", (els) => els.map((e) => ({ id: e.dataset.offerId, on: e.querySelector(".on").innerText, op: e.querySelector(".op").innerText, of: e.querySelector(".of").innerText, more: !!e.querySelector(".more") })));
+    const exp = offersOf(cat, t);
+    rec(`${t}: показаны все способы доступа, включая недоступные`, rows.map((r) => r.id).join() === exp.map((o) => o.id).join(), `ожидалось ${exp.length}, на странице ${rows.length}`, { url: path, sel: "#offers" });
+    for (const o of exp) {
+      const r = rows.find((x) => x.id === o.id); if (!r) continue;
+      const p = [];
+      if (norm(r.on) !== norm(o.name)) p.push(`название «${r.on}»`);
+      if (norm(r.of) !== norm(o.fact)) p.push("нет короткого описания");
+      if (norm(r.op) !== opText(o)) p.push(`справа «${norm(r.op)}» вместо «${opText(o)}»`);
+      if (r.more) p.push("подробности видны у невыбранного способа");
+      rec(`${t} · ${o.name}: строка способа доступа`, !p.length, p.join("; ") || norm(r.op), { url: path, sel: `.offer[data-offer-id="${o.id}"]` });
+    }
+    const termHidden = !(await vis(page, "#termSec")) && !(await vis(page, "#qtySec")) && !(await vis(page, "#req"));
+    rec(`${t}: до выбора способа сроков, количества и требований нет`, termHidden, "", { url: path, sel: "#termSec" });
+    const mf = minFrom(cat, t), sum = await txt(page, "#sum");
+    const okBar = mf != null ? sum.includes(`от ${norm(eur(mf))}`) && sum.includes("Выберите способ доступа") : sum.includes("Нет в наличии");
+    rec(`${t}: панель без выбора`, okBar && (await dis(page, "#toCart")) && (await dis(page, "#buyNow")), `«${sum}», кнопки должны быть неактивны`, { url: path, sel: "#bar" });
 
-      // выбор каждого предложения
-      for (const o of exp) {
-        await go(page, base, path);
-        await page.click(`.offer[data-offer-id="${o.id}"]`);
-        const k = info(o, term) ? term : autoTerm(o);
-        const notice = (await vis(page, "#notice")) ? await txt(page, "#notice") : "";
-        const label = `${t} · ${o.name} @${TL(term)}`;
-        if (k !== term) rec(`${label}: срок переключён с пояснением`, notice.includes(`Срок изменён на ${TL(k)}`), `пояснение: «${notice}»`, { url: path, sel: "#notice" });
-        else rec(`${label}: выбор без лишних пояснений`, !notice, notice ? `неожиданное пояснение «${notice}»` : "", { url: path, sel: "#notice" });
+    for (const o of exp) {
+      await go(page, base, path);
+      await page.click(`.offer[data-offer-id="${o.id}"]`);
+      const k0 = preferTerm(o, 1); // в прототипе по умолчанию 1 мес; способ без 1 мес получает свой срок без пояснения (раньше способ не был выбран)
+      for (const k of termsOf(o)) {
+        if (k !== k0) await page.click(`#terms button[data-term="${k}"]`);
+        n++;
+        const label = `${t} · ${o.name} · ${TL(k)}`;
         const sp = await selectedProblems(page, cat, o, k);
-        rec(`${label}: выбранное состояние (${TL(k)})`, !sp.length, sp.join("; "), { url: `?demo&t=${t}&o=${o.id}&term=${k}`, sel: ".before" });
+        rec(`${label}: выбранное состояние`, !sp.length, sp.join("; "), { url: `?demo&t=${t}&o=${o.id}&term=${k}`, sel: "#purchase" });
         const i = info(o, k);
         if (buyable(i) && maxEff(o, i) > 1) {
           const qp = await qtyProblems(page, o, k);
-          rec(`${label}: количество и итог`, !qp.length, qp.join("; "), { url: `?demo&t=${t}&o=${o.id}&term=${k}`, sel: "#qtyRow" });
-        } else {
-          rec(`${label}: количество скрыто, когда не нужно`, !(await vis(page, "#qtyRow")), "", { url: `?demo&t=${t}&o=${o.id}&term=${k}`, sel: "#qtyRow" });
-        }
+          rec(`${label}: количество и итог`, !qp.length, qp.join("; "), { url: `?demo&t=${t}&o=${o.id}&term=${k}`, sel: "#qtySec" });
+          await go(page, base, `?demo&t=${t}&o=${o.id}&term=${k}`);
+        } else rec(`${label}: количество скрыто, когда не нужно`, !(await vis(page, "#qtySec")), "", { url: `?demo&t=${t}&o=${o.id}&term=${k}`, sel: "#qtySec" });
       }
     }
   }
@@ -63,102 +66,93 @@ export async function logicSuite(browser, cat, base, results) {
   return n;
 }
 
-function rowProblems(o, term, text, selected) {
-  const p = [], i = info(o, term), has = (s) => text.includes(norm(s));
-  if (!text.includes(norm(o.name))) p.push(`нет названия «${o.name}»`);
-  if (!i) {
-    if (!has("Не продаётся") || !has(`на ${TL(term)}`)) p.push(`нет «Не продаётся на ${TL(term)}»`);
-    const list = termsOf(o).map(TL).join(", ");
-    if (!has(`Есть на ${list}`)) p.push(`нет «Есть на ${list}»`);
-    if (text.includes("€")) p.push("показана цена для непродаваемого срока");
-  } else if (buyable(i)) {
-    if (!has(eur(i.price))) p.push(`нет цены ${norm(eur(i.price))}`);
-    if (!has(`за ${TL(term)}`)) p.push(`цена не подписана «за ${TL(term)}»`);
-    if (i.st === "low" && !has(`Осталось ${i.left}`)) p.push(`нет «Осталось ${i.left}»`);
-    if (i.st !== "low" && has("Осталось")) p.push("лишняя пометка остатка");
-  } else {
-    const head = i.st === "out" ? "Нет в наличии" : "Ожидается";
-    if (!has(head) || !has(`на ${TL(term)}`)) p.push(`нет «${head} на ${TL(term)}»`);
-    if (i.st === "soon" && !has(i.eta ? `Ожидается ${i.eta}` : "Срок поступления уточняется")) p.push("нет прогноза или «Срок поступления уточняется»");
-    if (!selected && !has("Уведомить")) p.push("нет кнопки «Уведомить»");
-    if (text.includes("€")) p.push("показана цена недоступного срока");
-  }
-  return p;
-}
-
 async function selectedProblems(page, cat, o, k) {
-  const p = [], i = info(o, k);
-  const checked = await page.getAttribute(`.offer[data-offer-id="${o.id}"]`, "aria-checked");
-  if (checked !== "true") p.push("строка не отмечена выбранной");
-  const pressed = await page.getAttribute(`#terms button[data-term="${k}"]`, "aria-pressed");
-  if (pressed !== "true") p.push(`не выбран срок ${TL(k)}`);
-  const title = await txt(page, "#hB");
-  if (title !== norm(`${o.t} · ${o.name} · ${TL(k)}`)) p.push(`заголовок блока «${title}»`);
-  const facts = await txt(page, "#facts");
-  if (!facts.includes("Вы получите") || !facts.includes(`на ${TLG(k)}`)) p.push("нет «Вы получите … на срок»");
-  const reqFirst = o.req.length ? o.req[0].text : "Только почта для получения заказа";
-  if (!facts.includes("От вас") || !facts.toLowerCase().includes(norm(reqFirst).toLowerCase())) p.push(`нет требования «${reqFirst}»`);
-  if (o.limits.length && (!facts.includes("Важно") || !facts.includes(norm(o.limits[0])))) p.push("нет главного ограничения в «Важно»");
+  const p = [], i = info(o, k), anyBuy = buyTerms(o).length > 0;
+  const row = `.offer[data-offer-id="${o.id}"]`;
+  if ((await page.getAttribute(row, "aria-checked")) !== "true") p.push("строка не отмечена выбранной");
+  if ((await page.locator('.offer[aria-checked="true"]').count()) !== 1) p.push("выбрано не одно значение");
+  const more = await txt(page, `${row} .more`);
+  if (o.limits.length && !more.includes(norm(o.limits[0]))) p.push("ограничение не видно в выбранной строке");
+  if ((more.match(/Важно:/g) || []).length > 1) p.push("«Важно:» повторяется");
+  if (!(await vis(page, "#openCond"))) p.push("нет ссылки «Все условия»");
+  // сроки: только сроки этого способа, точная цена у доступных
+  const terms = await page.$$eval("#terms button", (els) => els.map((e) => ({ k: +e.dataset.term, text: e.innerText, pressed: e.getAttribute("aria-pressed") })));
+  if (terms.map((x) => x.k).join() !== termsOf(o).join()) p.push(`сроки ${terms.map((x) => x.k).join(",")} вместо ${termsOf(o).join(",")}`);
+  for (const b of terms) {
+    const bi = info(o, b.k), bt = norm(b.text);
+    if (b.pressed !== String(b.k === k)) p.push(`у срока ${TL(b.k)} неверная отметка выбора`);
+    if (bi && buyable(bi)) {
+      if (!bt.includes(norm(eur(bi.price)))) p.push(`у срока ${TL(b.k)} нет цены ${norm(eur(bi.price))}`);
+      if (b.k > 1 && !bt.includes(`≈ ${norm(eur(bi.price / b.k))}/мес`)) p.push(`у срока ${TL(b.k)} нет «≈ ${norm(eur(bi.price / b.k))}/мес»`);
+      if (/наличии|Ожидается|осталось/i.test(bt)) p.push(`у доступного срока ${TL(b.k)} лишняя пометка`);
+    } else if (bi) {
+      const st = bi.st === "out" ? "Нет в наличии" : "Ожидается";
+      if (anyBuy && !bt.includes(st)) p.push(`у срока ${TL(b.k)} нет «${st}»`);
+      if (!anyBuy && bt !== TL(b.k)) p.push(`у срока ${TL(b.k)} повтор статуса, хотя он уже в строке способа`);
+      if (bt.includes("€")) p.push(`у недоступного срока ${TL(b.k)} показана цена`);
+    }
+  }
+  // требования — одной фразой
+  const req = await txt(page, "#req");
+  const r0 = o.req.length ? o.req[0].text : "только почта для получения заказа";
+  if (!req.startsWith("Понадобится:") || !req.toLowerCase().includes(norm(r0).toLowerCase())) p.push(`нет «Понадобится: ${r0}»`);
+  // панель и альтернативы
   const sumB = await txt(page, "#sum b"), sum = await txt(page, "#sum");
+  const altVis = await vis(page, "#alt");
   if (buyable(i)) {
     if (sumB !== norm(eur(i.price))) p.push(`итог «${sumB}» вместо ${norm(eur(i.price))}`);
     if (!sum.includes(`за ${TL(k)}`)) p.push("итог не подписан сроком");
-    if (k > 1 && !sum.includes(`≈ ${norm(eur(i.price / k))}/мес`)) p.push(`нет «≈ ${norm(eur(i.price / k))}/мес»`);
     if (await dis(page, "#toCart")) p.push("«В корзину» неактивна");
     if (!(await vis(page, "#buyNow")) || (await dis(page, "#buyNow"))) p.push("«Купить сейчас» недоступна");
-    if (await vis(page, "#notifyBar")) p.push("лишняя «Уведомить» в панели");
-    if (facts.includes("Наличие")) p.push("лишняя строка «Наличие»");
+    if (await vis(page, "#notifyBar")) p.push("лишняя «Уведомить»");
+    if (altVis) p.push("альтернативы показаны у доступного варианта");
   } else {
     const head = i.st === "out" ? "Нет в наличии" : "Ожидается";
     if (sumB !== head) p.push(`панель «${sumB}» вместо «${head}»`);
+    if (i.st === "soon" && !sum.includes(i.eta ? i.eta : "срок уточняется")) p.push("в панели нет прогноза или «срок уточняется»");
     if (await vis(page, "#buyNow")) p.push("«Купить сейчас» видна у недоступного");
     if (!(await dis(page, "#toCart"))) p.push("«В корзину» активна у недоступного");
-    if (!(await vis(page, "#notifyBar"))) p.push("нет «Уведомить» в панели");
-    const av = i.st === "soon" ? (i.eta ? `Ожидается ${i.eta}` : "Срок поступления уточняется") : `Нет в наличии на ${TL(k)}`;
-    if (!facts.includes("Наличие") || !facts.includes(norm(av))) p.push(`нет «Наличие: ${av}»`);
-  }
-  for (const m of tariffTerms(cat, o.t)) {
-    const b = page.locator(`#terms button[data-term="${m}"]`);
-    const bt = norm(await b.innerText()), bd = await b.isDisabled(), mi = info(o, m);
-    const expTxt = !mi ? "не продаётся" : mi.st === "out" ? "нет в наличии" : mi.st === "soon" ? "ожидается" : mi.st === "low" ? `осталось ${mi.left}` : "";
-    if (!mi && !bd) p.push(`срок ${TL(m)} не продаётся, но активен`);
-    if (mi && bd) p.push(`срок ${TL(m)} продаётся, но неактивен`);
-    if (expTxt && !bt.includes(expTxt)) p.push(`у срока ${TL(m)} нет подписи «${expTxt}»`);
-    if (!expTxt && bt !== TL(m)) p.push(`у срока ${TL(m)} лишняя подпись «${bt}»`);
+    if (!(await vis(page, "#notifyBar"))) p.push("нет «Уведомить»");
+    // альтернативы: другие доступные сроки этого способа, иначе доступные способы тарифа
+    const bt = buyTerms(o), others = offersOf(cat, o.t).filter((x) => x.id !== o.id && fromPrice(x) != null);
+    const altTxt = await txt(page, "#alt");
+    if (bt.length) { for (const m of bt) if (!altTxt.includes(`${TL(m)} · ${norm(eur(info(o, m).price))}`)) p.push(`нет альтернативы «${TL(m)}»`); }
+    else if (others.length) { for (const x of others) if (!altTxt.includes(norm(x.name))) p.push(`нет альтернативы «${x.name}»`); }
+    else if (altVis) p.push("показаны альтернативы, которых нет");
   }
   return p;
 }
 
 async function qtyProblems(page, o, k) {
   const p = [], i = info(o, k), mx = maxEff(o, i);
-  if (!(await vis(page, "#qtyRow"))) return ["нет выбора количества"];
+  if (!(await vis(page, "#qtySec"))) return ["нет выбора количества"];
   const hint = await txt(page, "#qtyHint");
-  if (!hint.includes(`максимум ${mx}`)) p.push(`подсказка «${hint}» вместо максимума ${mx}`);
-  if (i.st === "low" && !hint.includes("осталось")) p.push("подсказка не объясняет остаток");
-  if (mx > 1) { await page.click("#qp"); await page.evaluate((n) => { for (let c = 2; c < n; c++) document.getElementById("qp").click(); }, mx); } // первое — настоящее нажатие
+  const expHint = i.st === "low" && i.left <= o.max ? `сейчас доступно ${mx}` : `не больше ${mx} в заказе`;
+  if (hint !== expHint) p.push(`подсказка «${hint}» вместо «${expHint}»`);
+  if (mx > 1) { await page.click("#qp"); await page.evaluate((n) => { for (let c = 2; c < n; c++) document.getElementById("qp").click(); }, mx); }
   const q = Number(await txt(page, "#qv"));
   if (q !== mx) p.push(`дошли до ${q}, а не до ${mx}`);
   if (!(await dis(page, "#qp"))) p.push("«+» активна на максимуме");
   const total = i.price * mx, sumB = await txt(page, "#sum b"), sum = await txt(page, "#sum");
   if (sumB !== norm(eur(total))) p.push(`итог «${sumB}» вместо ${norm(eur(total))}`);
-  if (!sum.includes(`${mx} × ${norm(eur(i.price))}`)) p.push(`нет «${mx} × ${norm(eur(i.price))}»`);
-  if (k > 1 && !sum.includes(`итого ≈ ${norm(eur(total / k))}/мес`)) p.push(`нет «итого ≈ ${norm(eur(total / k))}/мес»`);
+  if (!sum.includes(`${mx} × ${norm(eur(i.price))} · ${TL(k)}`)) p.push(`нет «${mx} × ${norm(eur(i.price))} · ${TL(k)}»`);
   const unitReq = o.req.find((r) => r.scope === "unit");
-  if (unitReq) { const f = await txt(page, "#facts"); if (!f.includes(`из ${mx} ${o.unit[2]}`)) p.push(`требование не учитывает ${mx} шт.`); }
+  if (unitReq && !(await txt(page, "#req")).includes(`из ${mx} ${o.unit[2]}`)) p.push(`требование не учитывает ${mx} шт.`);
   await page.click("#toCart");
-  const badge = await txt(page, "#cartN");
-  if (badge !== String(mx)) p.push(`счётчик корзины ${badge} вместо ${mx}`);
+  if ((await txt(page, "#cartN")) !== String(mx)) p.push(`счётчик корзины ${await txt(page, "#cartN")} вместо ${mx}`);
   if (mx > 1) { await page.click("#qm"); await page.evaluate((n) => { for (let c = 2; c < n; c++) document.getElementById("qm").click(); }, mx); }
   if ((await txt(page, "#qv")) !== "1" || !(await dis(page, "#qm"))) p.push("не вернулись к 1 или «−» активна");
   if ((await txt(page, "#sum b")) !== norm(eur(i.price))) p.push("итог не пересчитан обратно");
   return p;
 }
 
-/* ---------- 2. Переходы: смена тарифа и остатка не меняет выбор незаметно ---------- */
+/* ---------- 2. Переходы: выбор не меняется незаметно ---------- */
 export async function transitionSuite(browser, cat, base, results) {
   const rec = makeRec(results, "Автоматические изменения выбора", base);
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
   const page = await ctx.newPage(); page.setDefaultTimeout(4000); watchErrors(page, rec, "переходы");
+  const notice = async () => ((await vis(page, "#notice")) ? await txt(page, "#notice") : "");
+  // смена тарифа при выбранном способе и 2 шт.
   for (const a of cat.tariffs) {
     let src = null;
     for (const o of offersOf(cat, a)) for (const k of termsOf(o)) if (!src && buyable(info(o, k)) && maxEff(o, info(o, k)) >= 2) src = { o, k };
@@ -168,16 +162,25 @@ export async function transitionSuite(browser, cat, base, results) {
       const path = `?demo&t=${a}&o=${src.o.id}&term=${src.k}&q=2`;
       await go(page, base, path);
       await page.click(`#tariffs button[data-tariff="${b}"]`);
-      const notice = (await vis(page, "#notice")) ? await txt(page, "#notice") : "";
-      const p = [];
-      if (!notice.includes("Предложение сброшено")) p.push("нет пояснения о сбросе предложения");
-      const bt = tariffTerms(cat, b);
-      if (!bt.includes(src.k) && !notice.includes(`Срок изменён на ${TL(bt[0])}`)) p.push("нет пояснения о смене срока");
-      if (!notice.includes("Количество сброшено до 1")) p.push("нет пояснения о сбросе количества");
-      if ((await page.locator('.offer[aria-checked="true"]').count()) !== 0) p.push("предложение осталось выбранным");
-      rec(`${a} (2 шт., ${TL(src.k)}) → ${b}`, !p.length, p.join("; ") || notice, { url: path, sel: "#notice" });
+      const nt = await notice(), p = [];
+      if (!nt.includes("Способ доступа сброшен")) p.push("нет пояснения о сбросе способа доступа");
+      if (!nt.includes("Количество сброшено до 1")) p.push("нет пояснения о сбросе количества");
+      if ((await page.locator('.offer[aria-checked="true"]').count()) !== 0) p.push("способ остался выбранным");
+      if (await vis(page, "#termSec")) p.push("сроки видны без выбранного способа");
+      rec(`${a} (2 шт.) → ${b}`, !p.length, p.join("; ") || nt, { url: path, sel: "#notice" });
     }
   }
+  // смена способа: срок, которого у нового способа нет, меняется с пояснением
+  for (const t of cat.tariffs) for (const a of offersOf(cat, t)) for (const ka of termsOf(a)) for (const b of offersOf(cat, t)) {
+    if (a.id === b.id || info(b, ka)) continue;
+    const path = `?demo&t=${t}&o=${a.id}&term=${ka}`;
+    await go(page, base, path);
+    await page.click(`.offer[data-offer-id="${b.id}"]`);
+    const kb = preferTerm(b, ka), nt = await notice();
+    const pressed = await page.getAttribute(`#terms button[data-term="${kb}"]`, "aria-pressed").catch(() => null);
+    rec(`${t}: ${a.name} ${TL(ka)} → ${b.name}`, pressed === "true" && nt.includes(`Срок изменён на ${TL(kb)}`), `срок ${kb}: ${pressed}; пояснение «${nt}»`, { url: path, sel: "#notice" });
+  }
+  // смена срока с ограниченным количеством
   for (const o of cat.offers) for (const L of termsOf(o)) {
     const li = info(o, L); if (li.st !== "low") continue;
     const H = termsOf(o).find((h) => h !== L && buyable(info(o, h)) && maxEff(o, info(o, h)) > li.left);
@@ -185,9 +188,18 @@ export async function transitionSuite(browser, cat, base, results) {
     const path = `?demo&t=${o.t}&o=${o.id}&term=${H}&q=${maxEff(o, info(o, H))}`;
     await go(page, base, path);
     await page.click(`#terms button[data-term="${L}"]`);
-    const notice = (await vis(page, "#notice")) ? await txt(page, "#notice") : "";
-    const q = await txt(page, "#qv");
-    rec(`${o.t} · ${o.name}: ${TL(H)} → ${TL(L)} с остатком ${li.left}`, q === String(li.left) && notice.includes(`уменьшено до ${li.left}`), `количество ${q}, пояснение «${notice}»`, { url: path, sel: "#notice" });
+    const nt = await notice(), q = await txt(page, "#qv");
+    rec(`${o.t} · ${o.name}: ${TL(H)} → ${TL(L)}, доступно ${li.left}`, q === String(li.left) && nt.includes(`уменьшено до ${li.left}`), `количество ${q}, пояснение «${nt}»`, { url: path, sel: "#notice" });
+  }
+  // альтернатива возвращает к покупке
+  for (const o of cat.offers) for (const k of termsOf(o)) {
+    const i = info(o, k); if (buyable(i)) continue;
+    const bt = buyTerms(o); if (!bt.length) continue;
+    const path = `?demo&t=${o.t}&o=${o.id}&term=${k}`;
+    await go(page, base, path);
+    await page.click(`#alt [data-alt-term="${bt[0]}"]`);
+    const ok = (await page.getAttribute(`#terms button[data-term="${bt[0]}"]`, "aria-pressed")) === "true" && (await vis(page, "#buyNow"));
+    rec(`${o.t} · ${o.name} · ${TL(k)}: альтернатива «${TL(bt[0])}» открывает покупку`, ok, "", { url: path, sel: "#alt" });
   }
   await ctx.close();
 }
@@ -201,7 +213,7 @@ export async function uiSuite(browser, cat, base, results) {
 
   await page.goto(U(base, ""));
   rec("Обычный адрес: тестовое меню скрыто", !(await vis(page, "#openDemo")), "", { url: "" });
-  rec("Обычный адрес: пометка демо видна", (await txt(page, ".demo")).includes("Демо-прототип"), "", { url: "", sel: ".demo" });
+  rec("Обычный адрес: пометка демо видна", (await txt(page, ".demo")).includes("Демо"), "", { url: "", sel: ".demo" });
   await page.goto(U(base, "?demo"));
   rec("Тестовый адрес ?demo: тестовое меню доступно", await vis(page, "#openDemo"), "", { url: "?demo", sel: "#openDemo" });
 
@@ -309,7 +321,7 @@ function layoutIssues() {
   document.querySelectorAll(".offer").forEach((o) => pair(o.querySelector(".on"), o.querySelector(".op"), `название и цена в «${o.querySelector(".on").innerText}»`));
   pair(document.querySelector(".sum"), document.querySelector(".acts"), "итог и кнопки в панели");
   pair(document.querySelector(".logo"), document.querySelector(".hdr .ib"), "логотип и значки шапки");
-  document.querySelectorAll(".seg button").forEach((b) => { if (shown(b) && b.scrollWidth > b.clientWidth + 1) out.push({ type: "обрезанная подпись сегмента", sel: path(b), detail: b.innerText.replace(/\s+/g, " ") }); });
+  document.querySelectorAll(".seg button, .term, .alt-l button").forEach((b) => { if (shown(b) && b.scrollWidth > b.clientWidth + 1) out.push({ type: "обрезанная подпись сегмента", sel: path(b), detail: b.innerText.replace(/\s+/g, " ") }); });
   if (sheetOpen) {
     const s = document.querySelector(".sheet").getBoundingClientRect();
     if (s.top < 0 || s.bottom > vh + 1) out.push({ type: "лист не помещается в экран", sel: ".sheet", detail: `${Math.round(s.top)}…${Math.round(s.bottom)} при высоте ${vh}` });
@@ -321,15 +333,20 @@ function layoutIssues() {
     if (wasInert) pg.setAttribute("inert", "");
     if (el && !el.closest("#scrim")) out.push({ type: "панель покупки видна поверх листа", sel: "#bar", detail: "" });
   } else {
-    const doc = document.documentElement;
-    if (doc.scrollHeight > vh + 50) { // длинная страница: панель прилипает к низу экрана
-      window.scrollTo(0, Math.round((doc.scrollHeight - vh) / 2));
-      const b = document.getElementById("bar").getBoundingClientRect();
+    const doc = document.documentElement, desk = vw >= 960, bar = document.getElementById("bar");
+    const before = desk ? [...document.querySelectorAll("#purchase > *")].filter((e) => e !== bar && shown(e)).pop() : document.querySelector(".about");
+    // закрепление: прокручиваем так, чтобы конец содержимого перед панелью был ниже экрана
+    window.scrollTo(0, 0);
+    const endY = before.getBoundingClientRect().bottom + scrollY;
+    const startY = (desk ? document.getElementById("purchase") : document.querySelector(".pdp")).getBoundingClientRect().top + scrollY;
+    if (endY - startY > vh) {
+      window.scrollTo(0, Math.max(0, Math.min(endY - vh - 80, startY + 40)));
+      const b = bar.getBoundingClientRect();
       if (Math.abs(b.bottom - vh) > 1.5) out.push({ type: "панель покупки не закреплена при прокрутке", sel: "#bar", detail: `низ панели ${Math.round(b.bottom)} при высоте ${vh}` });
     }
     window.scrollTo(0, doc.scrollHeight);
-    const b = document.getElementById("bar").getBoundingClientRect(), m = document.querySelector("main").getBoundingClientRect();
-    if (b.top < m.bottom - 0.5) out.push({ type: "панель перекрывает конец страницы", sel: "#bar", detail: `верх панели ${Math.round(b.top)}, конец содержимого ${Math.round(m.bottom)}` });
+    const b = bar.getBoundingClientRect(), m = before.getBoundingClientRect();
+    if (b.top < m.bottom - 0.5) out.push({ type: "панель перекрывает конец содержимого", sel: "#bar", detail: `верх панели ${Math.round(b.top)}, конец содержимого ${Math.round(m.bottom)}` });
     if (b.top - m.bottom > 60) out.push({ type: "большой разрыв перед панелью", sel: "#bar", detail: `${Math.round(b.top - m.bottom)} px` });
     window.scrollTo(0, 0);
   }

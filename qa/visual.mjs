@@ -38,10 +38,10 @@ export async function takeShots(browser, base, plan, outDir) {
       await go(page, base, p.url);
       await page.evaluate(() => document.fonts && document.fonts.ready);
       await page.addStyleTag({ content: "*{caret-color:transparent!important} #openDemo{visibility:hidden!important}" }); // снимок как у покупателя
-      if (p.kind !== "fullpage") await page.evaluate(() => { const h = document.getElementById("hT"); if (h) window.scrollTo(0, h.getBoundingClientRect().top + scrollY - 12); }); // в кадре — выбор и панель
+      if (p.kind === "fullpage") await page.addStyleTag({ content: ".bar{position:static!important}" }); // на снимке всей страницы панель — в конце, как после прокрутки
+      if (p.kind !== "fullpage" && !desktop) await page.evaluate(() => { const h = document.getElementById("hT"); if (h) window.scrollTo(0, h.getBoundingClientRect().top + scrollY - 12); }); // в кадре — выбор и панель
       const opt = { path: join(outDir, "shots", p.file) };
       if (p.kind === "fullpage") { opt.fullPage = true; }
-      else if (desktop) { opt.clip = { x: (width - 600) / 2, y: 0, width: 600, height: 900 }; }
       await page.screenshot(opt);
     }
     await ctx.close();
@@ -78,7 +78,7 @@ export async function contactSheets(browser, plan, outDir) {
     ["mobile", "Телефон 390 px", plan.filter((p) => p.w === 390 && p.kind === "viewport" && !p.dark), 3, 390],
     ["mobile-320", "Телефон 320 px", plan.filter((p) => p.w === 320), 3, 320],
     ["dark", "Тёмная тема, 390 px", plan.filter((p) => p.dark), 3, 390],
-    ["desktop", "Компьютер 1280 px (центральная колонка)", plan.filter((p) => p.w === 1280), 2, 600],
+    ["desktop", "Компьютер 1280 px", plan.filter((p) => p.w === 1280), 2, 620],
   ];
   const ctx = await browser.newContext({ viewport: { width: 1300, height: 800 }, deviceScaleFactor: 1 });
   const page = await ctx.newPage();
