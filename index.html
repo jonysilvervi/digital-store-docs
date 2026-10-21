@@ -597,7 +597,7 @@ function cur(){return S.o?byId(S.o):null}
 function settle(msgs,prev,direct){
   var o=cur();if(!o)return;
   var want=desired.term!=null?desired.term:S.term;
-  var n=want!=null&&info(o,want)?want:(S.term!=null&&info(o,S.term)?S.term:(buyTerms(o)[0]||keys(o)[0]));
+  var n=want!=null&&info(o,want)?want:(S.term!=null&&info(o,S.term)?S.term:nearestTerm(o,want!=null?want:S.term));
   if(prev&&prev.o&&prev.term!==n&&!direct){
     if(desired.term!=null&&n===desired.term)msgs.push("Срок снова "+TLG(n)+", как вы выбирали.");
     else msgs.push("Срок изменён на "+TLG(n)+": у способа «"+o.name+"» нет срока "+TLG(prev.term)+".");
@@ -611,6 +611,10 @@ function settle(msgs,prev,direct){
   else if(q===desired.q&&prev&&prev.o&&q>1&&prevQ!==q)msgs.push("Количество снова "+q+", как вы выбирали.");   // и когда счётчик был скрыт
   S.q=q;
 }
+// Замена отсутствующего срока (А7-04): ближайший доступный по числу месяцев, при равном расстоянии — более короткий.
+// Без исходного срока или без доступных — первый доступный, иначе первый по порядку.
+function nearestTerm(o,k){var b=buyTerms(o);if(!b.length)return keys(o)[0];if(k==null)return b[0];
+  return b.slice().sort(function(x,y){return Math.abs(x-k)-Math.abs(y-k)||x-y})[0];}
 function shownQty(){var o=cur(),i=o&&info(o,S.term);return o&&buyable(i)&&o.max>1?S.q:null}
 function snapshot(){return {o:S.o,term:S.term,qShown:shownQty()}}
 

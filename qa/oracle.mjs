@@ -45,7 +45,8 @@ export const plural = (n, f) => { const a = n % 10, b = n % 100; return a === 1 
 export const TLG = (n) => `${n} ${plural(n, ["месяц", "месяца", "месяцев"])}`;
 export const offerStatus = (o) => (termsOf(o).some((k) => info(o, k).st === "soon") ? "Ожидается" : "Нет в наличии");
 // Срок после выбора способа: прежний, если он у способа есть; иначе первый доступный; иначе первый.
-export function preferTerm(o, prev) { if (prev != null && info(o, prev)) return prev; const b = buyTerms(o); return b.length ? b[0] : termsOf(o)[0]; }
+// Реестр А7-04: если срока нет у способа — ближайший доступный по числу месяцев, при равенстве более короткий.
+export function preferTerm(o, prev) { if (prev != null && info(o, prev)) return prev; const b = buyTerms(o); if (!b.length) return termsOf(o)[0]; if (prev == null) return b[0]; return [...b].sort((x, y) => Math.abs(x - prev) - Math.abs(y - prev) || x - y)[0]; }
 export const autoTerm = (o) => preferTerm(o, null);
 export function minFrom(cat, t) { const ps = offersOf(cat, t).map(fromPrice).filter((x) => x != null); return ps.length ? Math.min(...ps) : null; }
 

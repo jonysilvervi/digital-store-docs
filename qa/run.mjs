@@ -80,7 +80,7 @@ async function main() {
     const rOut = join(OUT, "regress");
     try { execSync(`node "${join(HERE, "regress.mjs")}"`, { env: { ...process.env, BASE_URL: BASE, OUT_DIR: rOut, LABEL: SHA }, stdio: "inherit", timeout: 300000 }); } catch {} // код выхода не важен — важен summary.json
     const rs = JSON.parse(readFileSync(join(rOut, "summary.json"), "utf8")).results;
-    if (rs.length < 29) throw new Error(`регрессионных тестов выполнено ${rs.length} из 29`);
+    if (rs.length < 30) throw new Error(`регрессионных тестов выполнено ${rs.length} из 30`);
     for (const r of rs) results.push({ group: "Регрессионные тесты", name: `${r.id} (${r.reqs.join(", ")}) ${r.title}`, ok: r.ok, detail: r.detail, url: null, path: null, width: 390, sel: null, shot: r.shot ? `regress/${r.shot}` : undefined });
   }, 320);
   plan = shotPlan(cat, mode);

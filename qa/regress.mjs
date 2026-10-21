@@ -32,6 +32,9 @@ const FIX = {
     offer("o", "Plus", "own", "Способ О", { 1: { price: 12, st: "ok" } }) ] },
   tariffs: (n) => { const ts = Array.from({ length: n }, (_, k) => "T" + (k + 1)); return { product: { id: "x", name: "Тест" }, tariffs: ts,
     offers: ts.map((t, k) => offer("o" + k, t, "own", "Способ " + t, { 1: { price: 5 + k, st: "ok" } })) }; },
+  nearestTerm: { product: { id: "x", name: "Тест" }, tariffs: ["Plus"], offers: [
+    offer("a", "Plus", "own", "Способ А", { 2: { price: 8, st: "ok" }, 12: { price: 40, st: "ok" } }),
+    offer("b", "Plus", "sep", "Способ Б", { 1: { price: 5, st: "ok" }, 3: { price: 12, st: "ok" } }) ] },
   manyUnits: { product: { id: "x", name: "Тест" }, tariffs: ["Plus"], offers: [
     offer("u", "Plus", "team", "Места", { 1: { price: 2, st: "ok" } }, { max: 25, req: [{ text: "почта участника", scope: "unit" }] }) ] },
 };
@@ -61,6 +64,7 @@ const activeKey = (page) => page.evaluate(() => { const a = document.activeEleme
   return a.dataset.tariff ? "tariff:" + a.dataset.tariff : a.dataset.offerId ? "offer:" + a.dataset.offerId : a.dataset.term ? "term:" + a.dataset.term : a.id ? "#" + a.id : a.tagName; });
 
 async function test(id, reqs, title, kind, fn) {
+  if (process.env.ONLY && !process.env.ONLY.split(",").includes(id)) return; // выборочный запуск: ONLY=R-24,R-01
   const page = await newPage();
   let ok = false, detail = "", shot = null;
   try { const r = await fn(page); ok = r.ok; detail = r.detail || ""; }
@@ -350,6 +354,27 @@ async function main() {
     await open(p, "&t=Plus"); // «Место в общем аккаунте»: доступен только срок 1 мес.
     const t = await txt(p, '.offer[data-offer-id="plus-shared"] .op');
     return { ok: !!t && !/^от\s/.test(t), detail: `«${t}»` };
+  });
+
+  await test("R-24", ["А7-04", "А7-02"], "Отсутствующий срок заменяется ближайшим доступным (при равенстве — более коротким) и восстанавливается при возврате", "регрессия", async (p) => {
+    const bad = [];
+    // данные демо: «На ваш аккаунт» 12 мес. → «Отдельный аккаунт» (1 и 3 мес.) → ожидается 3 → обратно 12
+    await open(p, "&t=Plus&o=plus-own&term=12");
+    await p.click('.offer[data-offer-id="plus-sep"]'); const t1 = await pressedTerm(p), n1 = await txt(p, "#notice");
+    await p.click('.offer[data-offer-id="plus-own"]'); const t2 = await pressedTerm(p), n2 = await txt(p, "#notice");
+    if (t1 !== 3 || !termRe(3).test(n1)) bad.push(`12 → «Отдельный аккаунт»: срок ${t1}, пояснение «${n1}»`);
+    if (t2 !== 12 || !termRe(12).test(n2)) bad.push(`обратно: срок ${t2}, пояснение «${n2}»`);
+    // синтетика: 2 мес. при доступных 1 и 3 — равное расстояние, выбирается 1; 12 мес. — выбирается 3
+    const q = await newPage(); await withCatalog(q, FIX.nearestTerm);
+    for (const [from, want] of [[2, 1], [12, 3]]) {
+      await q.goto(BASE + `?demo&t=Plus&o=a&term=${from}`);
+      await q.click('.offer[data-offer-id="b"]'); const t = await pressedTerm(q);
+      await q.click('.offer[data-offer-id="a"]'); const back = await pressedTerm(q);
+      if (t !== want) bad.push(`синтетика ${from} мес. → ${t}, ожидалось ${want}`);
+      if (back !== from) bad.push(`синтетика: возврат дал ${back}, ожидалось ${from}`);
+    }
+    await q.context().close();
+    return { ok: !bad.length, detail: bad.join("; ") || `12 → ${t1} → ${t2}; синтетика верна` };
   });
 
   await test("G-01", ["А7-03"], "Тариф A → B → A: сброс с пояснением, прежний выбор не восстанавливается", "охранный", async (p) => {
