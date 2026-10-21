@@ -30,8 +30,10 @@ const FIX = {
   stockOne: { product: { id: "x", name: "Тест" }, tariffs: ["Plus"], offers: [
     offer("s", "Plus", "sep", "Способ С", { 1: { price: 10, st: "low", left: 1 } }, { max: 3 }),
     offer("o", "Plus", "own", "Способ О", { 1: { price: 12, st: "ok" } }) ] },
-  fiveTariffs: { product: { id: "x", name: "Тест" }, tariffs: ["T1", "T2", "T3", "T4", "T5"], offers: ["T1", "T2", "T3", "T4", "T5"].map((t, k) =>
-    offer("o" + k, t, "own", "Способ " + t, { 1: { price: 5 + k, st: "ok" } })) },
+  tariffs: (n) => { const ts = Array.from({ length: n }, (_, k) => "T" + (k + 1)); return { product: { id: "x", name: "Тест" }, tariffs: ts,
+    offers: ts.map((t, k) => offer("o" + k, t, "own", "Способ " + t, { 1: { price: 5 + k, st: "ok" } })) }; },
+  manyUnits: { product: { id: "x", name: "Тест" }, tariffs: ["Plus"], offers: [
+    offer("u", "Plus", "team", "Места", { 1: { price: 2, st: "ok" } }, { max: 25, req: [{ text: "почта участника", scope: "unit" }] }) ] },
 };
 async function withCatalog(page, fixture) {
   await page.route((u) => u.href.split("?")[0] === BASE.split("?")[0], async (route) => {
@@ -91,17 +93,28 @@ async function main() {
     return { ok: q === 3, detail: `после возврата к 1 мес. количество ${q}, ожидалось 3` };
   });
 
-  await test("R-04", ["А10-05"], "Клавиатура: фокус остаётся на нажатом элементе", "регрессия", async (p) => {
-    const lost = [];
-    const check = async (sel, key, expect) => { await p.focus(sel); await p.keyboard.press(key); const a = await activeKey(p); if (a !== expect) lost.push(`${expect} → ${a}`); };
+  await test("R-04", ["А10-05"], "Клавиатура: действие выполнено, фокус остаётся на нажатом элементе и виден", "регрессия", async (p) => {
+    const bad = [];
+    const step = async (sel, key, expectKey, effect, label) => {
+      await p.focus(sel); await p.keyboard.press(key);
+      const a = await activeKey(p);
+      const fv = await p.evaluate(() => { const e = document.activeElement; return !!e && e !== document.body && e.matches(":focus-visible"); });
+      const eff = await effect();
+      if (!eff) bad.push(`${label}: действие не выполнено`);
+      if (a !== expectKey) bad.push(`${label}: фокус ${a} вместо ${expectKey}`);
+      else if (!fv) bad.push(`${label}: фокус не виден (:focus-visible)`);
+    };
     await open(p, "&t=Plus");
-    await check('#tariffs button[data-tariff="Pro"]', "Enter", "tariff:Pro");
-    await open(p, "&t=Plus");
-    await check('.offer[data-offer-id="plus-own"]', "Enter", "offer:plus-own");
-    await check('#terms button[data-term="3"]', "Enter", "term:3");
-    await check("#qp", "Enter", "#qp");            // 1 → 2
-    await check("#qm", "Enter", "#qm");            // 2 → 1: «−» достигает минимума и не должна терять фокус
-    return { ok: !lost.length, detail: lost.length ? "фокус потерян: " + lost.join("; ") : "" };
+    await p.keyboard.press("Tab"); // включает режим клавиатуры для :focus-visible
+    await step('#tariffs button[data-tariff="Pro"]', "Enter", "tariff:Pro",
+      async () => (await p.getAttribute('#tariffs button[data-tariff="Pro"]', "aria-pressed")) === "true" || (await p.getAttribute('#tariffs button[data-tariff="Pro"]', "aria-checked")) === "true", "тариф");
+    await open(p, "&t=Plus"); await p.keyboard.press("Tab");
+    await step('.offer[data-offer-id="plus-own"]', "Enter", "offer:plus-own",
+      async () => (await p.getAttribute('.offer[data-offer-id="plus-own"]', "aria-checked")) === "true", "способ");
+    await step('#terms [data-term="3"]', "Enter", "term:3", async () => (await pressedTerm(p)) === 3, "срок");
+    await step("#qp", "Enter", "#qp", async () => (await qty(p)) === 2, "«+» (1 → 2)");
+    await step("#qm", "Enter", "#qm", async () => (await qty(p)) === 1, "«−» до минимума (2 → 1)");
+    return { ok: !bad.length, detail: bad.join("; ") };
   });
 
   await test("R-05", ["Г-09", "А10-05"], "Способы доступа — одна точка Tab и стрелки", "регрессия", async (p) => {
@@ -157,11 +170,22 @@ async function main() {
     return { ok: t.includes(norm(eur(15))) && termRe(3).test(t) && !termRe(1).test(t), detail: `цена способа: «${t}», ожидалось 15,00 € за 3 мес.` };
   });
 
-  await test("R-09", ["А3-05", "А8-05"], "Месячный эквивалент всего заказа в итоге (3 мес. × 2 шт.)", "регрессия", async (p) => {
-    await open(p, "&t=Plus&o=plus-own&term=3&q=2");
-    const bar = await txt(p, "#sum");
-    const okTotal = bar.includes(norm(eur(84))), okMonthly = bar.includes(norm(eur(28))) && /мес/.test(bar);
-    return { ok: okTotal && okMonthly, detail: `итог: «${bar}»; ожидалось 84,00 € и ≈ 28,00 € в месяц за весь заказ` };
+  await test("R-09", ["А3-05", "А8-05"], "Итог: месячный эквивалент всего заказа подписан и рассчитан верно", "регрессия", async (p) => {
+    const monthlyRe = /(≈|в\s*мес|\/\s*мес|в\s*месяц)/i, orderRe = /(заказ|итого|всего|за\s+все)/i;
+    const lines = async () => (await p.locator("#sum").innerText()).split("\n").map(norm).filter(Boolean);
+    const bad = [];
+    for (const [q, term, unit] of [[2, 3, 42], [3, 3, 42], [1, 3, 42], [2, 12, 159]]) {
+      await open(p, `&t=Plus&o=plus-own&term=${term}&q=${q}`);
+      const L = await lines(), total = unit * q;
+      const want = norm(eur(total / term)), wrong = norm(eur(unit / term));
+      const hit = L.find((l) => l.includes(want) && monthlyRe.test(l));
+      if (!hit) bad.push(`${q} шт. × ${term} мес.: нет строки с ${want} в месяц (итог: ${L.join(" | ")})`);
+      else if (q > 1 && !orderRe.test(hit)) bad.push(`${q} шт.: «${hit}» не указывает, что это весь заказ`);
+      if (q > 1 && L.some((l) => l.includes(wrong) && monthlyRe.test(l))) bad.push(`${q} шт.: в итоге месячная цена одной штуки ${wrong} выглядит как цена заказа`);
+    }
+    await open(p, "&t=Plus&o=plus-own&term=1&q=2");
+    if ((await lines()).some((l) => /≈/.test(l))) bad.push("срок 1 мес.: лишний месячный эквивалент");
+    return { ok: !bad.length, detail: bad.join("; ") };
   });
 
   await test("R-10a", ["А4-07"], "Пока «+» доступна, подписи об ограничении нет", "регрессия", async (p) => {
@@ -181,17 +205,36 @@ async function main() {
     return { ok, detail: `лимит заказа (3): «${limitMsg}»; наличие (2): «${stockMsg}»` };
   });
 
-  await test("R-10c", ["А4-07", "А11-01"], "Наличие 1 при лимите 3: ограничение объяснено у счётчика", "регрессия", async (p) => {
+  await test("R-10c", ["А4-07", "А11-01"], "Наличие 1 при лимите 3: виден счётчик и объяснение именно про наличие", "регрессия", async (p) => {
     await withCatalog(p, FIX.stockOne); await open(p, "&t=Plus&o=s&term=1");
-    const shown = await vis(p, "#qtySec");
-    const t = shown ? await txt(p, "#qtySec") : "";
-    return { ok: shown && /1/.test(t.replace(/^\D*/, "")) && t.length > 0, detail: shown ? `у счётчика: «${t}»` : "блок количества скрыт — покупатель не узнает, почему нельзя взять больше" };
+    if (!(await vis(p, "#qtySec"))) return { ok: false, detail: "блок количества скрыт — покупатель не узнает, почему нельзя взять больше одной штуки" };
+    const q = await qty(p);
+    const plusBlocked = await p.evaluate(() => { const b = document.getElementById("qp"); return b.disabled || b.getAttribute("aria-disabled") === "true"; });
+    const msg = norm(await p.evaluate(() => { const s = document.getElementById("qtySec"); const c = s.cloneNode(true); c.querySelectorAll("h2, .step, [hidden]").forEach((e) => e.remove()); return c.innerText; }));
+    const nums = (msg.match(/\d+/g) || []).map(Number);
+    const aboutStock = /(налич|доступн|остал|склад)/i.test(msg), aboutLimit = /(заказ|максимум|не больше|лимит)/i.test(msg);
+    const ok = q === 1 && plusBlocked && nums.includes(1) && !nums.includes(3) && aboutStock && !aboutLimit;
+    return { ok, detail: `количество ${q}; «+» заблокирована: ${plusBlocked}; объяснение: «${msg}» (про наличие: ${aboutStock}, про лимит заказа: ${aboutLimit})` };
   });
 
-  await test("R-11", ["А11-06"], "Склонение числа тарифов (5 тарифов)", "регрессия", async (p) => {
-    await withCatalog(p, FIX.fiveTariffs); await open(p, "");
-    const t = await txt(p, "body"); const m = t.match(/(?<![0-9])5\s+тариф[а-я]*/);
-    return { ok: !m || m[0].endsWith("тарифов"), detail: m ? `на странице: «${m[0]}»` : "число тарифов не показывается" };
+  await test("R-11", ["А11-06", "А6-03"], "Числа и склонения: «из N мест» для 2, 5, 11, 21, 22; число тарифов, если показано", "регрессия", async (p) => {
+    const gen = (n) => (n % 10 === 1 && n % 100 !== 11 ? "места" : "мест"); // родительный падеж после «из N»
+    const bad = [];
+    await withCatalog(p, FIX.manyUnits);
+    for (const n of [2, 5, 11, 21, 22]) {
+      await open(p, `&t=Plus&o=u&term=1&q=${n}`);
+      const t = await txt(p, "#req");
+      const m = t.match(new RegExp(`(?<![0-9])${n}\\s+(мест[а-я]*)`));
+      if (!m) bad.push(`${n} шт.: в требованиях нет количества («${t}»)`);
+      else if (m[1] !== gen(n)) bad.push(`«${n} ${m[1]}» вместо «${n} ${gen(n)}»`);
+    }
+    for (const [n, w] of [[5, "тарифов"], [21, "тариф"], [3, "тарифа"]]) {
+      const q = await newPage(); await withCatalog(q, FIX.tariffs(n)); await q.goto(BASE + "?demo");
+      const m = (await txt(q, "body")).match(new RegExp(`(?<![0-9])${n}\\s+(тариф[а-я]*)`));
+      if (m && m[1] !== w) bad.push(`«${n} ${m[1]}» вместо «${n} ${w}»`);
+      await q.context().close();
+    }
+    return { ok: !bad.length, detail: bad.join("; ") };
   });
 
   await test("R-12", ["Г-06"], "Недоступный вариант: корзины рядом с «Уведомить» нет", "регрессия", async (p) => {
@@ -206,14 +249,28 @@ async function main() {
     return { ok: sel === 1 && terms && buy, detail: `выбрано способов: ${sel}; сроки видны: ${terms}; покупка доступна: ${buy}` };
   });
 
-  await test("R-14", ["Г-05", "А6-01"], "Приватность общего аккаунта заметна до выбора способа", "регрессия", async (p) => {
+  await test("R-14", ["Г-05", "А6-01"], "Предупреждение о приватности из данных видно в строке общего аккаунта до выбора", "регрессия", async (p) => {
     await open(p, "&t=Plus");
-    const t = await txt(p, '.offer[data-offer-id="plus-shared"]');
-    const ok = /(чат|переписк|данн|истори)/i.test(t) && /(вид(ят|ны|еть)|доступ)/i.test(t);
-    return { ok, detail: `строка до выбора: «${t}»` };
+    const cat = await p.evaluate(() => JSON.parse(document.getElementById("catalog").textContent));
+    const shared = cat.offers.filter((o) => o.t === "Plus" && o.kind === "shared");
+    const bad = [];
+    for (const o of shared) {
+      const warn = o.privacy || o.limits[0]; // источник текста — данные каталога
+      const row = `.offer[data-offer-id="${o.id}"]`;
+      if ((await p.getAttribute(row, "aria-checked")) === "true") { bad.push("способ уже выбран — проверка невозможна"); continue; }
+      const found = await p.evaluate(([sel, w]) => { const norm = (s) => s.replace(/[\s\u00a0]+/g, " ").trim().toLowerCase().replace(/[.]$/, "");
+        const r = document.querySelector(sel); if (!r) return null; const target = norm(w);
+        for (const el of r.querySelectorAll("*")) { if (el.children.length && [...el.children].some((c) => norm(c.innerText || "").includes(target))) continue;
+          if (norm(el.innerText || "").includes(target)) { const b = el.getBoundingClientRect(), rb = r.getBoundingClientRect(), cs = getComputedStyle(el);
+            return { w: b.width, h: b.height, inside: b.left >= rb.left - 1 && b.right <= rb.right + 1 && b.top >= rb.top - 1 && b.bottom <= rb.bottom + 1, fs: parseFloat(cs.fontSize), vis: cs.visibility !== "hidden" && cs.display !== "none" }; } }
+        return null; }, [row, warn]);
+      if (!found) bad.push(`«${o.name}»: в строке нет предупреждения «${warn}»`);
+      else if (!found.vis || !found.inside || found.w < 1) bad.push(`«${o.name}»: предупреждение скрыто или выходит за строку`);
+      else if (found.fs < 13) bad.push(`«${o.name}»: предупреждение мельче 13 px (${found.fs})`);
+    }
+    return { ok: shared.length > 0 && !bad.length, detail: bad.join("; ") || `проверено способов: ${shared.length}` };
   });
 
-  /* ---------- охранные тесты (уже выполняются; должны оставаться зелёными) ---------- */
   await test("G-01", ["А7-03"], "Тариф A → B → A: сброс с пояснением, прежний выбор не восстанавливается", "охранный", async (p) => {
     await open(p, "&t=Plus&o=plus-own&term=3&q=2");
     await p.click('#tariffs button[data-tariff="Pro"]');
