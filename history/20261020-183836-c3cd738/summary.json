@@ -1,0 +1,1820 @@
+{
+ "run_at": "2026-10-20T18:38:36.540Z",
+ "runUrl": "https://github.com/jonysilvervi/digital-store-docs/actions/runs/39476448119",
+ "status": "PASSED",
+ "mode": "fast",
+ "modeReason": "изменено: README.md; стили не менялись",
+ "site": {
+  "sha": "c3cd738179890d481315a03440b86af652931742",
+  "freshness": {
+   "ok": true,
+   "note": "сборка GitHub Pages для c3cd738 завершена; HTML на сайте побайтно совпадает с коммитом (ожидание 11 с)",
+   "waited": 11,
+   "buildCommit": "c3cd738179890d481315a03440b86af652931742",
+   "buildStatus": "built",
+   "apiAvailable": true,
+   "byteMatch": true,
+   "superseded": false
+  }
+ },
+ "timings": {
+  "logic": "4.4",
+  "transitions": "1.0",
+  "ui": "1.2",
+  "layout": "1.3",
+  "shots": "1.2",
+  "visual": "0.8",
+  "failshots": "0.0",
+  "total": "10.3"
+ },
+ "counts": {
+  "offerTerm": 20,
+  "layoutStates": 42,
+  "failShots": 0,
+  "offers": 8,
+  "tariffs": 4
+ },
+ "fatal": null,
+ "results": [
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · 1 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 1, на странице 1",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=1",
+   "path": "?demo&t=Go&term=1",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 4,90 € за 1 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=1",
+   "path": "?demo&t=Go&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"go-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · 1 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 4,90 € за 1 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=1",
+   "path": "?demo&t=Go&term=1",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=1",
+   "path": "?demo&t=Go&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1",
+   "path": "?demo&t=Go&o=go-own&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @1 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1",
+   "path": "?demo&t=Go&o=go-own&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · 3 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 1, на странице 1",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=3",
+   "path": "?demo&t=Go&term=3",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 13,90 € за 3 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=3",
+   "path": "?demo&t=Go&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"go-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · 3 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 13,90 € за 3 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=3",
+   "path": "?demo&t=Go&term=3",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @3 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=3",
+   "path": "?demo&t=Go&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @3 мес: выбранное состояние (3 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @3 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · 12 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 1, на странице 1",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=12",
+   "path": "?demo&t=Go&term=12",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт · 12 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 49,00 € за 12 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=12",
+   "path": "?demo&t=Go&term=12",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"go-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · 12 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 49,00 € за 12 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=12",
+   "path": "?demo&t=Go&term=12",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @12 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&term=12",
+   "path": "?demo&t=Go&term=12",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @12 мес: выбранное состояние (12 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=12",
+   "path": "?demo&t=Go&o=go-own&term=12",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Go · На ваш аккаунт @12 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=12",
+   "path": "?demo&t=Go&o=go-own&term=12",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · 1 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 3, на странице 3",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 14,90 € за 1 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "Отдельный аккаунт 17,90 € за 1 мес Новый аккаунт, которым пользуетесь только вы Осталось 2",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-sep\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в общем аккаунте 6,90 € за 1 мес Один аккаунт на нескольких покупателей",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-shared\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · 1 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 6,90 € за 1 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=1",
+   "path": "?demo&t=Plus&o=plus-own&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @1 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=1",
+   "path": "?demo&t=Plus&o=plus-own&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @1 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=1",
+   "path": "?demo&t=Plus&o=plus-shared&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @1 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=1",
+   "path": "?demo&t=Plus&o=plus-shared&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · 3 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 3, на странице 3",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 42,00 € за 3 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "Отдельный аккаунт 51,00 € за 3 мес Новый аккаунт, которым пользуетесь только вы",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-sep\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в общем аккаунте Нет в наличии на 3 мес Один аккаунт на нескольких покупателей Уведомить",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-shared\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · 3 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 42,00 € за 3 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @3 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @3 мес: выбранное состояние (3 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=3",
+   "path": "?demo&t=Plus&o=plus-own&term=3",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @3 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=3",
+   "path": "?demo&t=Plus&o=plus-own&term=3",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @3 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @3 мес: выбранное состояние (3 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=3",
+   "path": "?demo&t=Plus&o=plus-sep&term=3",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @3 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=3",
+   "path": "?demo&t=Plus&o=plus-sep&term=3",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @3 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=3",
+   "path": "?demo&t=Plus&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @3 мес: выбранное состояние (3 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3",
+   "path": "?demo&t=Plus&o=plus-shared&term=3",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @3 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3",
+   "path": "?demo&t=Plus&o=plus-shared&term=3",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · 12 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 3, на странице 3",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт · 12 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 159,00 € за 12 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт · 12 мес: строка предложения",
+   "ok": true,
+   "detail": "Отдельный аккаунт Не продаётся на 12 мес Новый аккаунт, которым пользуетесь только вы Есть на 1 мес, 3 мес",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-sep\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте · 12 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в общем аккаунте Не продаётся на 12 мес Один аккаунт на нескольких покупателей Есть на 1 мес, 3 мес",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"plus-shared\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · 12 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 159,00 € за 12 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @12 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @12 мес: выбранное состояние (12 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=12",
+   "path": "?demo&t=Plus&o=plus-own&term=12",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · На ваш аккаунт @12 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=12",
+   "path": "?demo&t=Plus&o=plus-own&term=12",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @12 мес: срок переключён с пояснением",
+   "ok": true,
+   "detail": "пояснение: «Срок изменён на 1 мес: «Отдельный аккаунт» не продаётся на 12 мес.»",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @12 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Отдельный аккаунт @12 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @12 мес: срок переключён с пояснением",
+   "ok": true,
+   "detail": "пояснение: «Срок изменён на 1 мес: «Место в общем аккаунте» не продаётся на 12 мес.»",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @12 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=1",
+   "path": "?demo&t=Plus&o=plus-shared&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Plus · Место в общем аккаунте @12 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=1",
+   "path": "?demo&t=Plus&o=plus-shared&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · 1 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 3, на странице 3",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт 149,00 € за 1 мес Подключение к вашему аккаунту ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"pro-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в общем аккаунте 39,00 € за 1 мес Один аккаунт на нескольких покупателей",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"pro-shared\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "Отдельный аккаунт Нет в наличии на 1 мес Новый аккаунт, которым пользуетесь только вы Уведомить",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"pro-sep\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · 1 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 39,00 € за 1 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-own&term=1",
+   "path": "?demo&t=Pro&o=pro-own&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт @1 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-own&term=1",
+   "path": "?demo&t=Pro&o=pro-own&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=1",
+   "path": "?demo&t=Pro&o=pro-shared&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте @1 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=1",
+   "path": "?demo&t=Pro&o=pro-shared&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=1",
+   "path": "?demo&t=Pro&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=1",
+   "path": "?demo&t=Pro&o=pro-sep&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт @1 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=1",
+   "path": "?demo&t=Pro&o=pro-sep&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · 3 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 3, на странице 3",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "На ваш аккаунт Не продаётся на 3 мес Подключение к вашему аккаунту ChatGPT Есть на 1 мес",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"pro-own\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в общем аккаунте Ожидается на 3 мес Один аккаунт на нескольких покупателей Ожидается через 2–3 дня Уведомить",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"pro-shared\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт · 3 мес: строка предложения",
+   "ok": true,
+   "detail": "Отдельный аккаунт Нет в наличии на 3 мес Новый аккаунт, которым пользуетесь только вы Уведомить",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"pro-sep\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · 3 мес: панель без выбора",
+   "ok": true,
+   "detail": "«Нет доступных на 3 мес — выберите другой срок», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт @3 мес: срок переключён с пояснением",
+   "ok": true,
+   "detail": "пояснение: «Срок изменён на 1 мес: «На ваш аккаунт» не продаётся на 3 мес.»",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт @3 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-own&term=1",
+   "path": "?demo&t=Pro&o=pro-own&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · На ваш аккаунт @3 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-own&term=1",
+   "path": "?demo&t=Pro&o=pro-own&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте @3 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте @3 мес: выбранное состояние (3 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=3",
+   "path": "?demo&t=Pro&o=pro-shared&term=3",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Место в общем аккаунте @3 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=3",
+   "path": "?demo&t=Pro&o=pro-shared&term=3",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт @3 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&term=3",
+   "path": "?demo&t=Pro&term=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт @3 мес: выбранное состояние (3 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=3",
+   "path": "?demo&t=Pro&o=pro-sep&term=3",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Pro · Отдельный аккаунт @3 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=3",
+   "path": "?demo&t=Pro&o=pro-sep&term=3",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · 1 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 1, на странице 1",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=1",
+   "path": "?demo&t=Business&term=1",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве · 1 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в рабочем пространстве 22,00 € за 1 мес Место в командном пространстве Business",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=1",
+   "path": "?demo&t=Business&term=1",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"biz-team\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · 1 мес: панель без выбора",
+   "ok": true,
+   "detail": "«от 22,00 € за 1 мес · выберите предложение», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=1",
+   "path": "?demo&t=Business&term=1",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве @1 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=1",
+   "path": "?demo&t=Business&term=1",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве @1 мес: выбранное состояние (1 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1",
+   "path": "?demo&t=Business&o=biz-team&term=1",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве @1 мес: количество и итог",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1",
+   "path": "?demo&t=Business&o=biz-team&term=1",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · 12 мес: показаны все предложения тарифа",
+   "ok": true,
+   "detail": "ожидалось 1, на странице 1",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=12",
+   "path": "?demo&t=Business&term=12",
+   "width": 390,
+   "sel": "#offers"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве · 12 мес: строка предложения",
+   "ok": true,
+   "detail": "Место в рабочем пространстве Ожидается на 12 мес Место в командном пространстве Business Срок поступления уточняется Уведомить",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=12",
+   "path": "?demo&t=Business&term=12",
+   "width": 390,
+   "sel": ".offer[data-offer-id=\"biz-team\"]"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · 12 мес: панель без выбора",
+   "ok": true,
+   "detail": "«Нет доступных на 12 мес — выберите другой срок», кнопки должны быть неактивны",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=12",
+   "path": "?demo&t=Business&term=12",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве @12 мес: выбор без лишних пояснений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&term=12",
+   "path": "?demo&t=Business&term=12",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве @12 мес: выбранное состояние (12 мес)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=12",
+   "path": "?demo&t=Business&o=biz-team&term=12",
+   "width": 390,
+   "sel": ".before"
+  },
+  {
+   "group": "Логика выбора и цены",
+   "name": "Business · Место в рабочем пространстве @12 мес: количество скрыто, когда не нужно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=12",
+   "path": "?demo&t=Business&o=biz-team&term=12",
+   "width": 390,
+   "sel": "#qtyRow"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Go (2 шт., 1 мес) → Plus",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Plus. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1&q=2",
+   "path": "?demo&t=Go&o=go-own&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Go (2 шт., 1 мес) → Pro",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Pro. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1&q=2",
+   "path": "?demo&t=Go&o=go-own&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Go (2 шт., 1 мес) → Business",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Business. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1&q=2",
+   "path": "?demo&t=Go&o=go-own&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Plus (2 шт., 1 мес) → Go",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Go. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=1&q=2",
+   "path": "?demo&t=Plus&o=plus-own&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Plus (2 шт., 1 мес) → Pro",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Pro. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=1&q=2",
+   "path": "?demo&t=Plus&o=plus-own&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Plus (2 шт., 1 мес) → Business",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Business. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=1&q=2",
+   "path": "?demo&t=Plus&o=plus-own&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Pro (2 шт., 1 мес) → Go",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Go. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=1&q=2",
+   "path": "?demo&t=Pro&o=pro-shared&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Pro (2 шт., 1 мес) → Plus",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Plus. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=1&q=2",
+   "path": "?demo&t=Pro&o=pro-shared&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Pro (2 шт., 1 мес) → Business",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Business. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=1&q=2",
+   "path": "?demo&t=Pro&o=pro-shared&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Business (2 шт., 1 мес) → Go",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Go. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1&q=2",
+   "path": "?demo&t=Business&o=biz-team&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Business (2 шт., 1 мес) → Plus",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Plus. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1&q=2",
+   "path": "?demo&t=Business&o=biz-team&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Business (2 шт., 1 мес) → Pro",
+   "ok": true,
+   "detail": "Предложение сброшено — выберите вариант в тарифе Pro. Количество сброшено до 1.",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1&q=2",
+   "path": "?demo&t=Business&o=biz-team&term=1&q=2",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Автоматические изменения выбора",
+   "name": "Plus · Отдельный аккаунт: 3 мес → 1 мес с остатком 2",
+   "ok": true,
+   "detail": "количество 2, пояснение «Количество уменьшено до 2: столько осталось.»",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=3&q=3",
+   "path": "?demo&t=Plus&o=plus-sep&term=3&q=3",
+   "width": 390,
+   "sel": "#notice"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Обычный адрес: тестовое меню скрыто",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742",
+   "path": "",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Обычный адрес: пометка демо видна",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742",
+   "path": "",
+   "width": 390,
+   "sel": ".demo"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Тестовый адрес ?demo: тестовое меню доступно",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 390,
+   "sel": "#openDemo"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Условия: лист открыт поверх, страница недоступна",
+   "ok": true,
+   "detail": "{\"inert\":true,\"barCovered\":true,\"focus\":\"shX\",\"can\":false,\"moved\":false,\"locked\":true}",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": ".sheet"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Условия: панель покупки полностью закрыта листом",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": "#bar"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Условия: фокус на кнопке закрытия",
+   "ok": true,
+   "detail": "фокус: shX",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Условия: своя прокрутка содержимого",
+   "ok": true,
+   "detail": "содержимое помещается без прокрутки",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": "#shB"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Условия: Tab не выходит за пределы листа",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Условия: Escape закрывает, фокус возвращается, выбор сохранён",
+   "ok": true,
+   "detail": "фокус: openCond",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3",
+   "path": "?demo&t=Go&o=go-own&term=3",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Сравнить тарифы: лист открывается",
+   "ok": true,
+   "detail": "Тарифы ChatGPT",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 390,
+   "sel": ".sheet"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Сравнить тарифы: карточка на каждый тариф из данных",
+   "ok": true,
+   "detail": "4 из 4",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 390,
+   "sel": "#shB"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Сравнить тарифы: ✕ закрывает, фокус возвращается",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Уведомить: форма открывается",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3",
+   "path": "?demo&t=Plus&o=plus-shared&term=3",
+   "width": 390,
+   "sel": ".sheet"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Уведомить: пустая почта не принимается",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3",
+   "path": "?demo&t=Plus&o=plus-shared&term=3",
+   "width": 390,
+   "sel": "#nf"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Уведомить: честный демо-результат без обещаний",
+   "ok": true,
+   "detail": "Демо: подписка не создана В рабочей версии здесь будет подтверждение подписки на уведомление для «Plus · Место в общем аккаунте · 3 мес».",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3",
+   "path": "?demo&t=Plus&o=plus-shared&term=3",
+   "width": 390,
+   "sel": "#shB"
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Уведомить: закрывается нажатием на затемнение",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3",
+   "path": "?demo&t=Plus&o=plus-shared&term=3",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Листы, вопросы и служебный режим",
+   "name": "Вопросы: 5 пунктов раскрываются и закрываются",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 390,
+   "sel": "details"
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Предложение не выбрано (вид по умолчанию)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Полный выбор: срок больше месяца, 2 шт.",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3&q=2",
+   "path": "?demo&t=Go&o=go-own&term=3&q=2",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Самая большая сумма (максимум штук)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=12&q=3",
+   "path": "?demo&t=Plus&o=plus-own&term=12&q=3",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Ограниченный остаток",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Нет в наличии",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=1",
+   "path": "?demo&t=Pro&o=pro-sep&term=1",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Ожидается, прогноз известен",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=3",
+   "path": "?demo&t=Pro&o=pro-shared&term=3",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Ожидается, срок уточняется",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=12",
+   "path": "?demo&t=Business&o=biz-team&term=12",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Срок не продаётся у части предложений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Тариф с одним предложением",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1",
+   "path": "?demo&t=Go&o=go-own&term=1",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Самое длинное название предложения",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1",
+   "path": "?demo&t=Business&o=biz-team&term=1",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Тариф с наибольшим числом предложений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Открыт лист «Подробнее об условиях»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3&sheet=cond",
+   "path": "?demo&t=Go&o=go-own&term=3&sheet=cond",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Открыта форма «Уведомить»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3&sheet=notify",
+   "path": "?demo&t=Plus&o=plus-shared&term=3&sheet=notify",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "320px · Открыт лист «Сравнить тарифы»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&sheet=tariffs",
+   "path": "?demo&sheet=tariffs",
+   "width": 320,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Предложение не выбрано (вид по умолчанию)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Полный выбор: срок больше месяца, 2 шт.",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3&q=2",
+   "path": "?demo&t=Go&o=go-own&term=3&q=2",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Самая большая сумма (максимум штук)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=12&q=3",
+   "path": "?demo&t=Plus&o=plus-own&term=12&q=3",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Ограниченный остаток",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Нет в наличии",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=1",
+   "path": "?demo&t=Pro&o=pro-sep&term=1",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Ожидается, прогноз известен",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=3",
+   "path": "?demo&t=Pro&o=pro-shared&term=3",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Ожидается, срок уточняется",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=12",
+   "path": "?demo&t=Business&o=biz-team&term=12",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Срок не продаётся у части предложений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Тариф с одним предложением",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1",
+   "path": "?demo&t=Go&o=go-own&term=1",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Самое длинное название предложения",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1",
+   "path": "?demo&t=Business&o=biz-team&term=1",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Тариф с наибольшим числом предложений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Открыт лист «Подробнее об условиях»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3&sheet=cond",
+   "path": "?demo&t=Go&o=go-own&term=3&sheet=cond",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Открыта форма «Уведомить»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3&sheet=notify",
+   "path": "?demo&t=Plus&o=plus-shared&term=3&sheet=notify",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "390px · Открыт лист «Сравнить тарифы»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&sheet=tariffs",
+   "path": "?demo&sheet=tariffs",
+   "width": 390,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Предложение не выбрано (вид по умолчанию)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo",
+   "path": "?demo",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Полный выбор: срок больше месяца, 2 шт.",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3&q=2",
+   "path": "?demo&t=Go&o=go-own&term=3&q=2",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Самая большая сумма (максимум штук)",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-own&term=12&q=3",
+   "path": "?demo&t=Plus&o=plus-own&term=12&q=3",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Ограниченный остаток",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-sep&term=1",
+   "path": "?demo&t=Plus&o=plus-sep&term=1",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Нет в наличии",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-sep&term=1",
+   "path": "?demo&t=Pro&o=pro-sep&term=1",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Ожидается, прогноз известен",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Pro&o=pro-shared&term=3",
+   "path": "?demo&t=Pro&o=pro-shared&term=3",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Ожидается, срок уточняется",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=12",
+   "path": "?demo&t=Business&o=biz-team&term=12",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Срок не продаётся у части предложений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=12",
+   "path": "?demo&t=Plus&term=12",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Тариф с одним предложением",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=1",
+   "path": "?demo&t=Go&o=go-own&term=1",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Самое длинное название предложения",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Business&o=biz-team&term=1",
+   "path": "?demo&t=Business&o=biz-team&term=1",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Тариф с наибольшим числом предложений",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&term=1",
+   "path": "?demo&t=Plus&term=1",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Открыт лист «Подробнее об условиях»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Go&o=go-own&term=3&sheet=cond",
+   "path": "?demo&t=Go&o=go-own&term=3&sheet=cond",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Открыта форма «Уведомить»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&t=Plus&o=plus-shared&term=3&sheet=notify",
+   "path": "?demo&t=Plus&o=plus-shared&term=3&sheet=notify",
+   "width": 1280,
+   "sel": null
+  },
+  {
+   "group": "Отображение",
+   "name": "1280px · Открыт лист «Сравнить тарифы»",
+   "ok": true,
+   "detail": "",
+   "url": "https://jonysilvervi.github.io/digital-store-docs/index.html?v=c3cd738179890d481315a03440b86af652931742&demo&sheet=tariffs",
+   "path": "?demo&sheet=tariffs",
+   "width": 1280,
+   "sel": null
+  }
+ ],
+ "visual": {
+  "prev": {
+   "available": true,
+   "items": [
+    {
+     "file": "none--390.png",
+     "title": "Предложение не выбрано (вид по умолчанию)",
+     "status": "same",
+     "ratio": 0
+    },
+    {
+     "file": "selected-qty2--390.png",
+     "title": "Полный выбор: срок больше месяца, 2 шт.",
+     "status": "same",
+     "ratio": 0
+    },
+    {
+     "file": "out--390.png",
+     "title": "Нет в наличии",
+     "status": "same",
+     "ratio": 0
+    },
+    {
+     "file": "sheet-cond--390.png",
+     "title": "Открыт лист «Подробнее об условиях»",
+     "status": "same",
+     "ratio": 0
+    },
+    {
+     "file": "selected-qty2--1280.png",
+     "title": "Полный выбор: срок больше месяца, 2 шт.",
+     "status": "same",
+     "ratio": 0
+    }
+   ]
+  },
+  "baseline": {
+   "available": false,
+   "items": []
+  }
+ },
+ "sheets": [
+  {
+   "file": "sheets/mobile-1.png",
+   "title": "Телефон 390 px · лист 1",
+   "count": 4
+  },
+  {
+   "file": "sheets/desktop-1.png",
+   "title": "Компьютер 1280 px (центральная колонка) · лист 1",
+   "count": 1
+  }
+ ],
+ "shots": [
+  "none--390.png",
+  "selected-qty2--390.png",
+  "out--390.png",
+  "sheet-cond--390.png",
+  "selected-qty2--1280.png"
+ ]
+}

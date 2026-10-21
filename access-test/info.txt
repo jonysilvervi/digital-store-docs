@@ -1,0 +1,8 @@
+Тест доступа: настоящий скриншот опубликованной страницы (снят GitHub Actions, Chromium, Playwright 1.48.2).
+Снято (UTC): 2026-10-20T17:46:41.362Z
+Адрес: https://jonysilvervi.github.io/digital-store-docs/index.html
+Окно: 390x844 CSS px, масштаб 2 (PNG 780x1688)
+Последний коммит gh-pages: 251992c90d0f08e6d8bfe03a8df5df87e47054f2
+HTML на сайте совпадает с этим коммитом: да
+Заголовок страницы: ChatGPT — серая схема
+Ошибки JavaScript: нет
