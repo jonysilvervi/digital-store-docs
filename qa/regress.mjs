@@ -378,6 +378,8 @@ async function main() {
     await q.goto(BASE + "?demo&t=Plus&o=a&term=2"); await q.click('#terms [data-term="12"]');
     await q.click('.offer[data-offer-id="b"]'); const tb = await pressedTerm(q);
     await q.click('.offer[data-offer-id="c"]'); const tc = await pressedTerm(q);
+    const nc = await txt(q, "#notice"); // причина замены — нет желаемых 12 мес., а не «нет 3 мес.» (у В они есть)
+    if (!termRe(12).test(nc) || !termRe(6).test(nc) || termRe(3).test(nc)) bad.push(`пояснение при Б → В: «${nc}», ожидалась замена на 6 из-за отсутствия 12`);
     await q.click('.offer[data-offer-id="a"]'); const ta = await pressedTerm(q);
     if (tb !== 3 || tc !== 6 || ta !== 12) bad.push(`синтетика 12 → Б → В → А: ${tb} → ${tc} → ${ta}, ожидалось 3 → 6 → 12`);
     await q.context().close();

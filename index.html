@@ -600,7 +600,7 @@ function settle(msgs,prev,direct){
   var n=want!=null&&info(o,want)?want:nearestTerm(o,want);   // приоритет — желаемый срок (А7): замена считается от него, а не от подставленного
   if(prev&&prev.o&&prev.term!==n&&!direct){
     if(desired.term!=null&&n===desired.term)msgs.push("Срок снова "+TLG(n)+", как вы выбирали.");
-    else msgs.push("Срок изменён на "+TLG(n)+": у способа «"+o.name+"» нет срока "+TLG(prev.term)+".");
+    else msgs.push("Срок изменён на "+TLG(n)+": у способа «"+o.name+"» нет срока "+TLG(want!=null?want:prev.term)+".");   // причина — отсутствие желаемого срока
   }
   S.term=n;
   var i=info(o,n);
