@@ -34,7 +34,8 @@ const FIX = {
     offers: ts.map((t, k) => offer("o" + k, t, "own", "Способ " + t, { 1: { price: 5 + k, st: "ok" } })) }; },
   nearestTerm: { product: { id: "x", name: "Тест" }, tariffs: ["Plus"], offers: [
     offer("a", "Plus", "own", "Способ А", { 2: { price: 8, st: "ok" }, 12: { price: 40, st: "ok" } }),
-    offer("b", "Plus", "sep", "Способ Б", { 1: { price: 5, st: "ok" }, 3: { price: 12, st: "ok" } }) ] },
+    offer("b", "Plus", "sep", "Способ Б", { 1: { price: 5, st: "ok" }, 3: { price: 12, st: "ok" } }),
+    offer("c", "Plus", "shared", "Способ В", { 3: { price: 10, st: "ok" }, 6: { price: 18, st: "ok" } }) ] },
   manyUnits: { product: { id: "x", name: "Тест" }, tariffs: ["Plus"], offers: [
     offer("u", "Plus", "team", "Места", { 1: { price: 2, st: "ok" } }, { max: 25, req: [{ text: "почта участника", scope: "unit" }] }) ] },
 };
@@ -373,8 +374,14 @@ async function main() {
       if (t !== want) bad.push(`синтетика ${from} мес. → ${t}, ожидалось ${want}`);
       if (back !== from) bad.push(`синтетика: возврат дал ${back}, ожидалось ${from}`);
     }
+    // желаемый срок помнится через несколько способов: явно 12 → Б (1, 3) → 3 → В (3, 6) → 6, а не подставленные 3 → обратно к А → 12
+    await q.goto(BASE + "?demo&t=Plus&o=a&term=2"); await q.click('#terms [data-term="12"]');
+    await q.click('.offer[data-offer-id="b"]'); const tb = await pressedTerm(q);
+    await q.click('.offer[data-offer-id="c"]'); const tc = await pressedTerm(q);
+    await q.click('.offer[data-offer-id="a"]'); const ta = await pressedTerm(q);
+    if (tb !== 3 || tc !== 6 || ta !== 12) bad.push(`синтетика 12 → Б → В → А: ${tb} → ${tc} → ${ta}, ожидалось 3 → 6 → 12`);
     await q.context().close();
-    return { ok: !bad.length, detail: bad.join("; ") || `12 → ${t1} → ${t2}; синтетика верна` };
+    return { ok: !bad.length, detail: bad.join("; ") || `12 → ${t1} → ${t2}; синтетика верна (в т. ч. 12 → 3 → 6 → 12)` };
   });
 
   await test("G-01", ["А7-03"], "Тариф A → B → A: сброс с пояснением, прежний выбор не восстанавливается", "охранный", async (p) => {

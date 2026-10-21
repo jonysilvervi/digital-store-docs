@@ -597,7 +597,7 @@ function cur(){return S.o?byId(S.o):null}
 function settle(msgs,prev,direct){
   var o=cur();if(!o)return;
   var want=desired.term!=null?desired.term:S.term;
-  var n=want!=null&&info(o,want)?want:(S.term!=null&&info(o,S.term)?S.term:nearestTerm(o,want!=null?want:S.term));
+  var n=want!=null&&info(o,want)?want:nearestTerm(o,want);   // приоритет — желаемый срок (А7): замена считается от него, а не от подставленного
   if(prev&&prev.o&&prev.term!==n&&!direct){
     if(desired.term!=null&&n===desired.term)msgs.push("Срок снова "+TLG(n)+", как вы выбирали.");
     else msgs.push("Срок изменён на "+TLG(n)+": у способа «"+o.name+"» нет срока "+TLG(prev.term)+".");
