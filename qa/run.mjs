@@ -75,6 +75,14 @@ async function main() {
   await guard("transitions", "Автоматические изменения выбора", () => transitionSuite(browser, cat, base, results));
   await guard("ui", "Листы, вопросы и служебный режим", () => uiSuite(browser, cat, base, results));
   counts.layoutStates = await guard("layout", "Отображение", () => layoutSuite(browser, cat, base, results));
+  // регрессионные тесты (реестр В-07) — отдельным процессом, чтобы их синтетические каталоги не влияли на остальные проверки
+  await guard("regress", "Регрессионные тесты", async () => {
+    const rOut = join(OUT, "regress");
+    try { execSync(`node "${join(HERE, "regress.mjs")}"`, { env: { ...process.env, BASE_URL: BASE, OUT_DIR: rOut, LABEL: SHA }, stdio: "inherit", timeout: 300000 }); } catch {} // код выхода не важен — важен summary.json
+    const rs = JSON.parse(readFileSync(join(rOut, "summary.json"), "utf8")).results;
+    if (rs.length < 20) throw new Error(`регрессионных тестов выполнено ${rs.length} из 20`);
+    for (const r of rs) results.push({ group: "Регрессионные тесты", name: `${r.id} (${r.reqs.join(", ")}) ${r.title}`, ok: r.ok, detail: r.detail, url: null, path: null, width: 390, sel: null, shot: r.shot ? `regress/${r.shot}` : undefined });
+  }, 320);
   plan = shotPlan(cat, mode);
   await guard("shots", "Снимки", () => takeShots(browser, base, plan, OUT));
   await guard("visual", "Сравнение и сводные листы", async () => {
@@ -113,7 +121,7 @@ function writeReport() {
   L.push(`- Режим: **${mode === "full" ? "полный" : "быстрый"}** (${modeReason})`);
   if (process.env.RUN_URL) L.push(`- Журнал запуска на GitHub: ${process.env.RUN_URL}`);
   L.push(`- Время проверки (UTC): ${new Date().toISOString().replace("T", " ").slice(0, 19)}`);
-  L.push(`- Длительность этапов, с: ожидание публикации ${freshness.waited ?? "—"} · логика ${T.logic ?? "—"} · переходы ${T.transitions ?? "—"} · листы ${T.ui ?? "—"} · отображение ${T.layout ?? "—"} · снимки ${T.shots ?? "—"} · сравнение и листы ${T.visual ?? "—"} · снимки ошибок ${T.failshots ?? "—"} · всего тестов ${T.total}`);
+  L.push(`- Длительность этапов, с: ожидание публикации ${freshness.waited ?? "—"} · логика ${T.logic ?? "—"} · переходы ${T.transitions ?? "—"} · листы ${T.ui ?? "—"} · отображение ${T.layout ?? "—"} · регрессия ${T.regress ?? "—"} · снимки ${T.shots ?? "—"} · сравнение и листы ${T.visual ?? "—"} · снимки ошибок ${T.failshots ?? "—"} · всего тестов ${T.total}`);
   L.push(``, `> Цены, остатки, прогнозы и условия на странице — **демонстрационные данные**. Проверка подтверждает только правильность отображения и расчётов по этим данным, а не их коммерческую достоверность.`, ``);
 
   L.push(`## Ошибки`, ``);

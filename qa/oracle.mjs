@@ -14,7 +14,6 @@ export async function go(page, base, path, real = false) {
   await page.goto(U(base, path));
 }
 export const TL = (n) => ({ 1: "1 мес", 3: "3 мес", 12: "12 мес" }[n] || `${n} мес`);
-export const TLG = (n) => ({ 1: "1 месяц", 3: "3 месяца", 12: "12 месяцев" }[n] || `${n} мес.`);
 
 // Формат суммы по спецификации: группы тысяч через неразрывный пробел, запятая, «€» через неразрывный пробел.
 export function eur(n) {
@@ -38,6 +37,12 @@ export const maxEff = (o, i) => (i && i.st === "low" ? Math.min(o.max, i.left) :
 export const buyTerms = (o) => termsOf(o).filter((k) => buyable(info(o, k)));
 // Цена «от» у способа доступа: минимум по доступным срокам; null — купить нельзя ни на один срок.
 export function fromPrice(o) { const ps = buyTerms(o).map((k) => info(o, k).price); return ps.length ? Math.min(...ps) : null; }
+// Самый дешёвый доступный срок способа (при равной цене — более короткий): цена «от» и её фактический срок.
+export function cheapestOf(o) { let best = null; for (const k of buyTerms(o)) { const pr = info(o, k).price; if (!best || pr < best.price) best = { term: k, price: pr }; } return best; }
+export function tariffCheapest(cat, t) { let best = null; for (const o of offersOf(cat, t)) { const c = cheapestOf(o); if (c && (!best || c.price < best.price)) best = c; } return best; }
+export const TC = (n) => `${n} мес.`; // компактная форма срока (Г-02)
+export const plural = (n, f) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? f[0] : a >= 2 && a <= 4 && (b < 10 || b >= 20) ? f[1] : f[2]; };
+export const TLG = (n) => `${n} ${plural(n, ["месяц", "месяца", "месяцев"])}`;
 export const offerStatus = (o) => (termsOf(o).some((k) => info(o, k).st === "soon") ? "Ожидается" : "Нет в наличии");
 // Срок после выбора способа: прежний, если он у способа есть; иначе первый доступный; иначе первый.
 export function preferTerm(o, prev) { if (prev != null && info(o, prev)) return prev; const b = buyTerms(o); return b.length ? b[0] : termsOf(o)[0]; }
