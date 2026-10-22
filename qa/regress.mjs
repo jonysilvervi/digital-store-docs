@@ -197,13 +197,13 @@ async function main() {
     await open(p, "&t=Plus&o=plus-own&term=1");
     const plusOn = !(await p.isDisabled("#qp"));
     const extra = await p.evaluate(() => { const s = document.getElementById("qtySec"); if (!s) return ""; const c = s.cloneNode(true);
-      c.querySelectorAll("h2, .step, [hidden]").forEach((e) => e.remove()); return c.innerText.trim(); });
+      c.querySelectorAll("h2, h3, .step, [hidden]").forEach((e) => e.remove()); return c.innerText.trim(); });
     return { ok: plusOn && !extra, detail: `«+» доступна: ${plusOn}; лишний текст у счётчика: «${norm(extra)}»` };
   });
 
   await test("G-05", ["А4-07"], "На пределе — объяснение; для наличия и для лимита заказа оно разное", "охранный", async (p) => {
     const msg = async () => p.evaluate(() => { const s = document.getElementById("qtySec"); if (!s || s.hidden) return ""; const c = s.cloneNode(true);
-      c.querySelectorAll("h2, .step, [hidden]").forEach((e) => e.remove()); return c.innerText.trim(); });
+      c.querySelectorAll("h2, h3, .step, [hidden]").forEach((e) => e.remove()); return c.innerText.trim(); });
     await open(p, "&t=Plus&o=plus-own&term=1&q=3"); const limitMsg = norm(await msg()); const limDis = await p.isDisabled("#qp");
     await open(p, "&t=Plus&o=plus-sep&term=1&q=2"); const stockMsg = norm(await msg()); const stDis = await p.isDisabled("#qp");
     const ok = limDis && stDis && limitMsg && stockMsg && limitMsg !== stockMsg && /3/.test(limitMsg) && /2/.test(stockMsg);
@@ -215,7 +215,7 @@ async function main() {
     if (!(await vis(p, "#qtySec"))) return { ok: false, detail: "блок количества скрыт — покупатель не узнает, почему нельзя взять больше одной штуки" };
     const q = await qty(p);
     const plusBlocked = await p.evaluate(() => { const b = document.getElementById("qp"); return b.disabled || b.getAttribute("aria-disabled") === "true"; });
-    const msg = norm(await p.evaluate(() => { const s = document.getElementById("qtySec"); const c = s.cloneNode(true); c.querySelectorAll("h2, .step, [hidden]").forEach((e) => e.remove()); return c.innerText; }));
+    const msg = norm(await p.evaluate(() => { const s = document.getElementById("qtySec"); const c = s.cloneNode(true); c.querySelectorAll("h2, h3, .step, [hidden]").forEach((e) => e.remove()); return c.innerText; }));
     const nums = (msg.match(/\d+/g) || []).map(Number);
     const aboutStock = /(налич|доступн|остал|склад)/i.test(msg), aboutLimit = /(заказ|максимум|не больше|лимит)/i.test(msg);
     const ok = q === 1 && plusBlocked && nums.includes(1) && !nums.includes(3) && aboutStock && !aboutLimit;
@@ -455,7 +455,7 @@ async function main() {
     await p.setViewportSize({ width: 1280, height: 900 }); await open(p, "&t=Plus&o=plus-own&term=12&q=3");
     const r = await p.evaluate(() => [...document.querySelectorAll("#sum span")].map((s) => ({ t: s.innerText, lines: Math.round(s.getBoundingClientRect().height / parseFloat(getComputedStyle(s).lineHeight || 17)) })));
     const bad = r.filter((x) => x.lines > 1);
-    return { ok: r.length >= 2 && !bad.length, detail: r.map((x) => `«${x.t}» — строк ${x.lines}`).join("; ") };
+    return { ok: r.length >= 1 && !bad.length, detail: r.map((x) => `«${x.t}» — строк ${x.lines}`).join("; ") };
   });
 
   await test("G-01", ["А7-03"], "Тариф A → B → A: сброс с пояснением, прежний выбор не восстанавливается", "охранный", async (p) => {

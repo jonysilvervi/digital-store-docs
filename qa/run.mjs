@@ -83,6 +83,14 @@ async function main() {
     if (rs.length < 39) throw new Error(`регрессионных тестов выполнено ${rs.length} из 39`);
     for (const r of rs) results.push({ group: "Регрессионные тесты", name: `${r.id} (${r.reqs.join(", ")}) ${r.title}`, ok: r.ok, detail: r.detail, url: null, path: null, width: 390, sel: null, shot: r.shot ? `regress/${r.shot}` : undefined });
   }, 320);
+  // покупательские сессии (группы А–И): последовательности действий на обычной странице, 5 размеров экрана
+  await guard("sessions", "Покупательские сессии", async () => {
+    const sOut = join(OUT, "sessions");
+    try { execSync(`node "${join(HERE, "sessions.mjs")}"`, { env: { ...process.env, BASE_URL: BASE, OUT_DIR: sOut, LABEL: SHA, VIEWPORTS: process.env.SESSION_VIEWPORTS || "320x568,390x740,819x900,820x900,1280x800", MIXED: process.env.MIXED || "2", SEED: process.env.SEED || "1" }, stdio: "inherit", timeout: 900000 }); } catch {}
+    const rs = JSON.parse(readFileSync(join(sOut, "summary.json"), "utf8")).results;
+    if (rs.length < 50) throw new Error(`покупательских сессий выполнено ${rs.length}`);
+    for (const r of rs) results.push({ group: "Покупательские сессии", name: `${r.id} ${r.viewport} · ${r.title}`, ok: r.ok, detail: r.ok ? `${r.steps} шагов, ${r.checks} проверок` : r.detail, url: null, path: null, width: Number(r.viewport.split("x")[0]), sel: null });
+  }, 960);
   plan = shotPlan(cat, mode);
   await guard("shots", "Снимки", () => takeShots(browser, base, plan, OUT));
   await guard("visual", "Сравнение и сводные листы", async () => {
@@ -121,7 +129,7 @@ function writeReport() {
   L.push(`- Режим: **${mode === "full" ? "полный" : "быстрый"}** (${modeReason})`);
   if (process.env.RUN_URL) L.push(`- Журнал запуска на GitHub: ${process.env.RUN_URL}`);
   L.push(`- Время проверки (UTC): ${new Date().toISOString().replace("T", " ").slice(0, 19)}`);
-  L.push(`- Длительность этапов, с: ожидание публикации ${freshness.waited ?? "—"} · логика ${T.logic ?? "—"} · переходы ${T.transitions ?? "—"} · листы ${T.ui ?? "—"} · отображение ${T.layout ?? "—"} · регрессия ${T.regress ?? "—"} · снимки ${T.shots ?? "—"} · сравнение и листы ${T.visual ?? "—"} · снимки ошибок ${T.failshots ?? "—"} · всего тестов ${T.total}`);
+  L.push(`- Длительность этапов, с: ожидание публикации ${freshness.waited ?? "—"} · логика ${T.logic ?? "—"} · переходы ${T.transitions ?? "—"} · листы ${T.ui ?? "—"} · отображение ${T.layout ?? "—"} · регрессия ${T.regress ?? "—"} · сессии ${T.sessions ?? "—"} · снимки ${T.shots ?? "—"} · сравнение и листы ${T.visual ?? "—"} · снимки ошибок ${T.failshots ?? "—"} · всего тестов ${T.total}`);
   L.push(``, `> Цены, остатки, прогнозы и условия на странице — **демонстрационные данные**. Проверка подтверждает только правильность отображения и расчётов по этим данным, а не их коммерческую достоверность.`, ``);
 
   L.push(`## Ошибки`, ``);
